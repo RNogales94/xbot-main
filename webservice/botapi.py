@@ -4,10 +4,12 @@ from flask_cors import CORS
 from utils.url_utils import is_aliexpress, captureURLs
 from xbot.xbotdb import Xbotdb
 from xbot.utils.product import load_product_from_json
-
+from bot.telegram_config import BOT_URL
+import requests
 from utils.amazon.tools import AmazonTools
 
 from scraper_proxy.proxy import Proxy
+import os
 
 xbot_webservice = Flask(__name__)
 CORS(xbot_webservice)
@@ -79,3 +81,26 @@ def new_offer():
 def get_todays_offers_from_amazon():
     pass
 
+
+@xbot_webservice.route('/bot', methods=['POST'])
+def main():
+    data = request.json
+
+    print(data)  # Comment to hide what Telegram is sending you
+    chat_id = data['message']['chat']['id']
+    message = data['message']['text']
+
+    json_data = {
+        "chat_id": chat_id,
+        "text": message,
+    }
+
+    message_url = BOT_URL + 'sendMessage'
+    requests.post(message_url, json=json_data)
+
+    return ''
+
+
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 5000))
+    xbot_webservice.run(host='0.0.0.0', port=port, debug=True)
