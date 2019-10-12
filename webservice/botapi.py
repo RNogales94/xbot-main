@@ -1,9 +1,11 @@
 import json
 from flask import Flask, request, Response
 from flask_cors import CORS
-from utils.url_utils import is_amazon, is_aliexpress, captureURLs
+from utils.url_utils import is_aliexpress, captureURLs
 from xbot.xbotdb import Xbotdb
 from xbot.utils.product import load_product_from_json
+
+from utils.amazon.tools import AmazonTools
 
 from scraper_proxy.proxy import Proxy
 
@@ -26,7 +28,7 @@ def redirect_scrape():
     user = request.json.get('user') or None
     print('URL='+url)
     print('user='+user)
-    if is_amazon(url) or is_aliexpress(url):
+    if AmazonTools.is_amazon(url) or is_aliexpress(url):
         scraped = proxy.scrape(url, user)
         response = json.dumps(scraped['data'])
         status = scraped['status']
@@ -54,7 +56,7 @@ def new_offer():
     offers = []
     for url in urls:
         print(url)
-        if is_amazon(url) or is_aliexpress(url):
+        if AmazonTools.is_amazon(url) or is_aliexpress(url):
             scraped = proxy.scrape(url, 'XBOT_API')
             status = scraped['status']
         else:
@@ -76,3 +78,4 @@ def new_offer():
 @xbot_webservice.route('/api/todayamazon')
 def get_todays_offers_from_amazon():
     pass
+
