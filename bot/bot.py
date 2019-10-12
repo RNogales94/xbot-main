@@ -2,7 +2,7 @@ from utils.singleton import Singleton
 
 
 @Singleton
-class Bot():
+class Bot:
     def __init__(self):
         self.__handle_intent = {
             'salutation': self.__start
