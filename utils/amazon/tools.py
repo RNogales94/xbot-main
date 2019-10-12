@@ -11,7 +11,7 @@ GAIN_RATE = 0.0  # Lower is better for xbot owner
 
 class AmazonTools:
     @classmethod
-    def is_amazon_url(cls, url):
+    def is_amazon(cls, url):
         try:
             url = expand_url(url)
         except requests.exceptions.ConnectionError:
