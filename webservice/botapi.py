@@ -25,19 +25,27 @@ def index():
 
 @xbot_webservice.route('/api/scrape', methods=['POST'])
 def redirect_scrape():
-    print('-------------------------------------------')
+    if request.headers.get('Content-Type') != 'application/json':
+        error_message = json.dumps({'Error': 'Content-Type must be application/json'})
+        return Response(error_message, status=400, mimetype='application/json')
     url = request.json.get('url')
     user = request.json.get('user') or None
-    print('URL='+url)
-    print('user='+user)
+
+    if url is None:
+        error_message = json.dumps({'Error': 'Must send a url in the json body'})
+        return Response(error_message, status=400, mimetype='application/json')
+
+    if user is None:
+        print("Warning: Request come from user None")
+
     if AmazonTools.is_amazon(url) or is_aliexpress(url):
         scraped = proxy.scrape(url, user)
         response = json.dumps(scraped['data'])
         status = scraped['status']
     else:
-        response = {}
+        response = json.dumps({'Error': 'No valid Amazon URL / AliExpress URL'})
         status = 400
-    print('***********************************************')
+
     return Response(response, status=status, mimetype='application/json')
 
 
