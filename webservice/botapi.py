@@ -5,6 +5,7 @@ from utils.url_utils import is_aliexpress, captureURLs
 from xbot.xbotdb import Xbotdb
 from xbot.utils.product import load_product_from_json
 from bot.telegram_config import BOT_URL
+from bot.bot import Bot
 import requests
 from utils.amazon.tools import AmazonTools
 
@@ -16,6 +17,8 @@ CORS(xbot_webservice)
 
 proxy = Proxy()
 xbotdb = Xbotdb()
+
+bot = Bot()
 
 
 @xbot_webservice.route("/")
@@ -96,7 +99,9 @@ def main():
 
     print(data)  # Comment to hide what Telegram is sending you
     chat_id = data['message']['chat']['id']
-    message = data['message']['text']
+    input_message = data['message']['text']
+
+    message = Bot.reply(input_message)
 
     json_data = {
         "chat_id": chat_id,
