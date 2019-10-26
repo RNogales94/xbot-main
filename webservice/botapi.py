@@ -101,7 +101,7 @@ def main():
     chat_id = data['message']['chat']['id']
     input_message = data['message']['text']
 
-    message = bot.reply(input_message)
+    message, chat_id = bot.reply(input_message, chat_id)
 
     json_data = {
         "chat_id": chat_id,
