@@ -21,7 +21,7 @@ class Bot:
         return message, chat_id
 
     def __get_intent(self, message):
-        print(f"Received message: {message}")
+        # print(f"Received message: {message}")
         return 'salutation'
 
     def __start(self, message):
