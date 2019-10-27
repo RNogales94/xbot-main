@@ -3,9 +3,13 @@ import requests
 import urllib
 
 
-def captureURLs(text):
+def capture_urls(text):
     urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*(),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', text)
     return urls
+
+
+def contain_urls(text):
+    return len(capture_urls(text)) > 0
 
 
 def expand_url(url):

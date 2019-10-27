@@ -1,7 +1,7 @@
 import json
 from flask import Flask, request, Response
 from flask_cors import CORS
-from utils.url_utils import is_aliexpress, captureURLs
+from utils.url_utils import is_aliexpress, capture_urls
 from xbot.xbotdb import Xbotdb
 from xbot.utils.product import load_product_from_json
 from bot.telegram_config import BOT_URL
@@ -65,7 +65,7 @@ def new_offer():
         error_message = '"message" field is mandatory, try with {"message": "hello world", "origin": "me"}'
         return Response(json.dumps({'Error': error_message}), status=400, mimetype='application/json')
 
-    urls = captureURLs(message)
+    urls = capture_urls(message)
     offers = []
     for url in urls:
         print(url)
