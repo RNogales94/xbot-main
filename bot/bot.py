@@ -24,6 +24,12 @@ class Bot:
 
         return message, chat_id
 
+    def __reply_to(self, intent, message):
+        message_handler = self.__handle_intent[intent]
+        response_text = message_handler(message)
+
+        return response_text
+
     @staticmethod
     def __get_intent(message):
         if message == "/start":
@@ -31,13 +37,6 @@ class Bot:
         if contain_urls(message):
             return 'url_detected'
         return 'no_intent'
-
-    def __(self, intent, message):
-        message_handler = self.__handle_intent[intent]
-        response_text = message_handler(message)
-
-        return response_text
-
 
     @staticmethod
     def __not_understood(message):
