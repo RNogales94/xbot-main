@@ -4,7 +4,10 @@ from utils.url_utils import contain_urls, capture_urls
 from scraper_proxy.proxy import Proxy
 from xbot.utils.product_factory import ProductFactory
 from bot.message_customizer import MessageCustomizer
+from xbot.xbotdb import Xbotdb
 from bot.message import Message
+
+db = Xbotdb()
 
 
 @Singleton
@@ -24,6 +27,7 @@ class Bot:
         :param chat_id:
         :return:
         """
+        user = db.get_user_by_chat_id(chat_id)
         intent = self.__get_intent(message)
         message = self.__reply_to(intent, message)
 

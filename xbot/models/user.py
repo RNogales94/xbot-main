@@ -3,9 +3,12 @@ from datetime import datetime
 
 
 def create_token(user_name):
-    hasher = hashlib.sha256()
-    hasher.update(user_name.encode())
-    return hasher.hexdigest()
+    if user_name:
+        hasher = hashlib.sha256()
+        hasher.update(user_name.encode())
+        return hasher.hexdigest()
+    else:
+        return None
 
 
 class User:
@@ -14,13 +17,13 @@ class User:
     telegram_name: RNogales
     telegram_channels: ['@canalejemplo', '@chollos']
     """
-    def __init__(self, telegram_name=None, chat_id=None, amazon_tag=None, telegram_channels=[], referrals=[]):
-        self.telegram_name = telegram_name
-        self.amazon_tag = amazon_tag
-        self.type = 'free'
-        self.telegram_channels = telegram_channels
+    def __init__(self, *args, telegramName=None, chatId=None, type='free', amazonTag=None, telegramChannels=[], referrals=[]):
+        self.telegram_name = telegramName
+        self.amazon_tag = amazonTag
+        self.type = type
+        self.telegram_channels = telegramChannels
         self.token = create_token(self.telegram_name)
-        self.chat_id = chat_id
+        self.chat_id = chatId
         self.creation_timestamp = datetime.now().timestamp()
         self.referrals = referrals
         self.last_modify = self.creation_timestamp

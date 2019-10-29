@@ -3,6 +3,8 @@ import pymongo
 from datetime import datetime
 import os
 
+from xbot.models.user import User
+
 print('Setting up config')
 print(os.environ['MONGO_USER'])
 
@@ -58,6 +60,15 @@ class Xbotdb():
         usernames = list(self.users.find({}, {'_id': 0, 'telegramName': 1}))
         usernames = [u['telegramName'] for u in usernames]
         return usernames
+
+    def get_user_by_chat_id(self, chat_id):
+        if isinstance(chat_id, int):
+            chat_id = str(chat_id)
+        user = self.users.find_one({'chatId': chat_id})
+        if user is not None:
+            return User(user)
+        else:
+            return None
 
     def exist_user(self, telegram_name):
         user = self.users.find_one({'telegramName': telegram_name})
