@@ -44,7 +44,7 @@ class Proxy:
         """
         if type(url) == type(list()):
             urls = url
-            result = [self.scrape(url) for url in urls]
+            result = [self.__scrape(url) for url in urls]
         if type(url) == type('string'):
             result = [self.__scrape(url)]
 
