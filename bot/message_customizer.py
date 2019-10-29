@@ -47,7 +47,10 @@ class MessageCustomizer:
                             shop_line=LineFormater.get_shop_line(url),
                             link_line=LineFormater.get_link_line(url),
                             watched_in_line=LineFormater.watched_in()
-                        ),
+                        )
 
             return msg
+
+        else:
+            return None
 

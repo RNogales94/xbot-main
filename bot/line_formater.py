@@ -142,6 +142,7 @@ class LineFormater:
             'TheCifu': f'\n{cls.emoji["globe"]}<a href="{url}">Ver en {cls.__get_shop_name(url)} </a>\n',
             'Vincent_Vegaa': f'<b>&#x1F6D2;Comprar </b><a href="{url}">aquí</a>\n\n',
         }
+        return link_line[style]
 
     @classmethod
     def watched_in(cls, style='default'):
@@ -151,6 +152,7 @@ class LineFormater:
             'Katka95': f'<b>&#128064;Visto en: </b><a href="https://t.me/TusChollosBelleza">TusChollosBelleza</a>\n\n',
 
         }
+        return watched_in_line[style]
 
 
 

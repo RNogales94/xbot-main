@@ -39,3 +39,5 @@ class Message:
         msg += self.shop_line
         msg += self.link_line
         msg += self.watched_in_line
+
+        return msg
