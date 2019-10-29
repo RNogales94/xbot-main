@@ -39,7 +39,7 @@ class Bot:
         if message == "/start":
             return 'salutation'
         if contain_urls(message):
-            return 'url_detected'
+            return 'format_urls'
         return 'no_intent'
 
     @staticmethod
