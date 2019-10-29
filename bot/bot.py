@@ -2,7 +2,7 @@ from utils.singleton import Singleton
 from random import choice
 from utils.url_utils import contain_urls, capture_urls
 from scraper_proxy.proxy import Proxy
-from xbot.utils.product import ProductFactory
+from xbot.utils.product_factory import ProductFactory
 from bot.message import Message
 
 

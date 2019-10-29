@@ -3,7 +3,7 @@ from flask import Flask, request, Response
 from flask_cors import CORS
 from utils.url_utils import is_aliexpress, capture_urls
 from xbot.xbotdb import Xbotdb
-from xbot.utils.product import ProductFactory
+from xbot.utils.product_factory import ProductFactory
 from bot.telegram_config import BOT_URL
 from bot.bot import Bot
 import requests

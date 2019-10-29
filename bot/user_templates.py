@@ -166,6 +166,7 @@ def user_template(product, template=None, coupon=None):
 
         except Exception as e:
             msg = f'Error creando el mensaje, Exception: {e}'
+            print(f'Exception {e}')
 
 
 
