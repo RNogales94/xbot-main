@@ -72,7 +72,7 @@ class Bot:
         products = [ProductFactory.build_product_from_json(obj) for obj in responses]
         print("Products built")
         print(products)
-        messages = [Message(product) for product in products]
+        messages = [str(Message(product)) for product in products]
         print("Messages")
         print(messages)
         print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
