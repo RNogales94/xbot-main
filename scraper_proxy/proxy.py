@@ -11,13 +11,10 @@ class Proxy:
     def __init__(self):
         self.scrape_broker = ScraperBroker()
 
-    def scrape(self, url, user):
-        scraper = self.scrape_broker.get_scraper(user)
+    def __scrape(self, url):
+        scraper = self.scrape_broker.get_scraper(user=None)
 
         print(f'Using {scraper}')
-
-        if user in baned_users:
-            return {'data': {'Error': 'Has agotado tu periodo de prueba, contacta con @RNogales para renovarlo'}, 'status': 200}
 
         if url == '':
             return {'data': {'Error': 'Parameter url not found'}, 'status': 400}
@@ -32,7 +29,23 @@ class Proxy:
                 return {'data': {}, 'status': 501}
 
             if r.json().get('short_description') is None:
-                self.scrape_broker.update_current_scraper(user)
+                self.scrape_broker.update_current_scraper(user=None)
                 r = requests.post(f'{scraper}{SCRAPER_ENDPOINT}', json={'url': url})
 
             return {'data': r.json(), 'status': 200}
+
+    def scrape(self, url, user_type=None):
+        """
+        Scrape urls and get information for a url
+
+        :param url: Single url or url list
+        :param user_type: (optional) user type valid values "PRO" "BOT" "STANDARD"
+        :return: A list of JSON with all the features extracted for each url
+        """
+        if type(url) == type(list()):
+            urls = url
+            result = [self.scrape(url) for url in urls]
+        if type(url) == type('string'):
+            result = [self.__scrape(url)]
+
+        return result

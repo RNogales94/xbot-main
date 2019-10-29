@@ -1,6 +1,9 @@
 from utils.singleton import Singleton
 from random import choice
 from utils.url_utils import contain_urls, capture_urls
+from scraper_proxy.proxy import Proxy
+from xbot.utils.product import ProductFactory
+from bot.message import Message
 
 
 @Singleton
@@ -9,7 +12,8 @@ class Bot:
         self.__handle_intent = {
             'salutation': self.__welcome,
             'no_intent': self.__not_understood,
-            'url_detected': self.__show_urls
+            'url_detected': self.__show_urls,
+            'format_urls': self.__format_urls,
         }
 
     def reply(self, message, chat_id):
@@ -46,14 +50,25 @@ class Bot:
                       'Lo siento, no se que decir a eso'
         ]
 
-        return choice(responses)
+        return [choice(responses)]
 
     @staticmethod
     def __welcome(message):
-        return 'Hola! Bienvenido a Xbot'
-
+        return ['Hola! Bienvenido a Xbot']
 
     @staticmethod
     def __show_urls(message):
         urls = capture_urls(message)
-        return f"Detected {urls}"
+        return urls
+
+    @staticmethod
+    def __format_urls(message):
+        urls = capture_urls(message)
+        responses = Proxy().scrape(urls)
+        products = [ProductFactory.build_product_from_json(obj) for obj in responses]
+        messages = [Message(product) for product in products]
+        return messages
+
+
+
+

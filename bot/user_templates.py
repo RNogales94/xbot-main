@@ -1,4 +1,6 @@
-from utils.web_utils import is_aliexpress, is_amazon
+# from utils.web_utils import is_aliexpress, is_amazon
+from utils.amazon.tools import AmazonTools
+
 
 emoji = {
     # Positive
@@ -58,9 +60,7 @@ def user_template(product, template=None, coupon=None):
             return ''
 
     def get_shop_name(url):
-        if is_aliexpress(url):
-            return 'Aliexpress'
-        elif is_amazon(url):
+        if AmazonTools.is_amazon(url):
             return 'Amazon'
         else:
             return ''

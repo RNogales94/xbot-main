@@ -3,7 +3,7 @@ from flask import Flask, request, Response
 from flask_cors import CORS
 from utils.url_utils import is_aliexpress, capture_urls
 from xbot.xbotdb import Xbotdb
-from xbot.utils.product import load_product_from_json
+from xbot.utils.product import ProductFactory
 from bot.telegram_config import BOT_URL
 from bot.bot import Bot
 import requests
@@ -81,7 +81,7 @@ def new_offer():
 
     for offer in offers:
         # Save in Mongo
-        product = load_product_from_json(offer)
+        product = ProductFactory.build_product_from_json(offer)
         if product.is_completed:
             xbotdb.insert_product(product, telegram_name='XBOT_API')
     print({'Message': f'Document inserted in mongo ({len(offers)})'})
@@ -101,15 +101,16 @@ def main():
     chat_id = data['message']['chat']['id']
     input_message = data['message']['text']
 
-    message, chat_id = bot.reply(input_message, chat_id)
+    messages, chat_id = bot.reply(input_message, chat_id)
 
-    json_data = {
-        "chat_id": chat_id,
-        "text": message,
-    }
+    for message in messages:
+        json_data = {
+            "chat_id": chat_id,
+            "text": message,
+        }
 
-    message_url = BOT_URL + 'sendMessage'
-    requests.post(message_url, json=json_data)
+        message_url = BOT_URL + 'sendMessage'
+        requests.post(message_url, json=json_data)
 
     return ''
 
