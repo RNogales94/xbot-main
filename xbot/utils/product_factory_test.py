@@ -18,7 +18,7 @@ def product_json():
 
 def test_build(product_json):
     product = ProductFactory.build_product_from_json(product_json)
-    assert product.short_description == "Versa 20880050 Set mesa y 4 sillas de madera blanca, 75x80x120cm, Juego comedor"
+    assert product.title == "Versa 20880050 Set mesa y 4 sillas de madera blanca, 75x80x120cm, Juego comedor"
 
     product_dict = product.to_dict()
     assert product_dict['shortDescription'] == "Versa 20880050 Set mesa y 4 sillas de madera blanca, 75x80x120cm, Juego comedor"

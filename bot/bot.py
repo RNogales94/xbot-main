@@ -3,6 +3,7 @@ from random import choice
 from utils.url_utils import contain_urls, capture_urls
 from scraper_proxy.proxy import Proxy
 from xbot.utils.product_factory import ProductFactory
+from bot.message_customizer import MessageCustomizer
 from bot.message import Message
 
 
@@ -72,9 +73,12 @@ class Bot:
         products = [ProductFactory.build_product_from_json(obj) for obj in responses]
         print("Products built")
         print(products)
-        messages = [str(Message(product)) for product in products]
+        messages = [MessageCustomizer.build_message(product) for product in products]
         print("Messages")
         print(messages)
+        text_messages = [str(message) for message in messages]
+        print("text messages")
+        print(text_messages)
         print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
         return messages
 

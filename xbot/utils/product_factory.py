@@ -15,7 +15,7 @@ class ProductFactory:
         end_date = json_obj.get('end_date', None)
         size = json_obj.get('size', None)
 
-        return Product(short_description=short_description,
+        return Product(title=short_description,
                        description=description,
                        features=features,
                        standard_price=standard_price,
