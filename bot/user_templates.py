@@ -135,17 +135,16 @@ def user_template(product, template=None, coupon=None):
                 'TheCifu': f'{emoji["trolley"]} Tienda: <a href="{url}">#{get_shop_name(url)} </a>\n\n',
             }
 
-
             link_line = {
                 'default': f'{emoji["trolley"]}<b>Comprar </b>\n{emoji["right_arrow"]}<a href="{url}">Ver en {get_shop_name(url)} </a>\n',
-                #'gavaste': f'<b>Comprar </b>\n{emoji["right_arrow"]} {url}\n',
+                # 'gavaste': f'<b>Comprar </b>\n{emoji["right_arrow"]} {url}\n',
                 'TheCifu': f'\n{emoji["globe"]}<a href="{url}">Ver en {get_shop_name(url)} </a>\n',
                 'Vincent_Vegaa': f'<b>&#x1F6D2;Comprar </b><a href="{url}">aquí</a>\n\n',
-
             }
+
             watched_in_line = {
                 'default': f'',
-                #'Vincent_Vegaa': f'<b>&#128064;Visto en: </b><a href="https://t.me/AmznSports">AmznSports</a>\n\n',
+                # 'Vincent_Vegaa': f'<b>&#128064;Visto en: </b><a href="https://t.me/AmznSports">AmznSports</a>\n\n',
                 'Katka95': f'<b>&#128064;Visto en: </b><a href="https://t.me/TusChollosBelleza">TusChollosBelleza</a>\n\n',
 
             }

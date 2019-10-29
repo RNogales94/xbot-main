@@ -63,10 +63,19 @@ class Bot:
 
     @staticmethod
     def __format_urls(message):
+        print("<<<<<<<<<<<<<<<<<<<<<<< Format url trace ")
         urls = capture_urls(message)
+        print(urls)
         responses = Proxy().scrape(urls)
+        print("Scrape response")
+        print(responses)
         products = [ProductFactory.build_product_from_json(obj) for obj in responses]
+        print("Products built")
+        print(products)
         messages = [Message(product) for product in products]
+        print("Messages")
+        print(messages)
+        print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
         return messages
 
 
