@@ -164,27 +164,12 @@ def user_template(product, template=None, coupon=None):
             msg += get_msg_property(link_line)
             msg += get_msg_property(watched_in_line)
 
+            success = True
+
         except Exception as e:
             msg = f'Error creando el mensaje, Exception: {e}'
             print(f'Exception {e}')
-
-
-
-
-
-
-        #msg = image_url_line.get(template, coupon_line['default'])
-        #msg += title_line.get(template, coupon_line['default'])
-        #msg += size_line.get(template, coupon_line['default'])
-        #msg += temporal_line.get(template, coupon_line['default'])
-        #msg += old_price_line.get(template, coupon_line['default'])
-        #msg += price_line.get(template, coupon_line['default'])
-        #if coupon:
-        #    msg += coupon_line.get(template, coupon_line['default'])
-        #msg += link_line.get(template, coupon_line['default'])
-        #msg += watched_in_line.get(template, coupon_line['default'])
-
-        success = True
+            success = False
 
     else:
         success = False
