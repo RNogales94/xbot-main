@@ -70,7 +70,7 @@ class Bot:
         responses = Proxy().scrape(urls)
         print("Scrape response")
         print(responses)
-        products = [ProductFactory.build_product_from_json(obj) for obj in responses]
+        products = [ProductFactory.build_product_from_json(obj['data']) for obj in responses]
         print("Products built")
         print(products)
         messages = [MessageCustomizer.build_message(product) for product in products]
@@ -80,7 +80,7 @@ class Bot:
         print("text messages")
         print(text_messages)
         print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-        return messages
+        return text_messages
 
 
 

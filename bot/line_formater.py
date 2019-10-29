@@ -1,9 +1,7 @@
 # from utils.web_utils import is_aliexpress, is_amazon
 from utils.amazon.tools import AmazonTools
-from utils.singleton import Singleton
 
 
-@Singleton
 class LineFormater:
 
     emoji = {
@@ -123,7 +121,7 @@ class LineFormater:
     def get_shop_line(cls, url, style='default'):
         shop_line = {
             'default': '',
-            'TheCifu': f'{cls.emoji["trolley"]} Tienda: <a href="{url}">#{cls.get_shop_name(url)} </a>\n\n',
+            'TheCifu': f'{cls.emoji["trolley"]} Tienda: <a href="{url}">#{cls.__get_shop_name(url)} </a>\n\n',
         }
         return shop_line['default']
 
@@ -141,7 +139,7 @@ class LineFormater:
             'default': f'{cls.emoji["trolley"]}<b>Comprar </b>\n\\'
                        f'{cls.emoji["right_arrow"]}<a href="{url}">Ver en {cls.__get_shop_name(url)} </a>\n',
 
-            'TheCifu': f'\n{cls.emoji["globe"]}<a href="{url}">Ver en {LineFormater.get_shop_name(url)} </a>\n',
+            'TheCifu': f'\n{cls.emoji["globe"]}<a href="{url}">Ver en {cls.__get_shop_name(url)} </a>\n',
             'Vincent_Vegaa': f'<b>&#x1F6D2;Comprar </b><a href="{url}">aquí</a>\n\n',
         }
 
