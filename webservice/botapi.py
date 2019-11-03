@@ -98,10 +98,10 @@ def main():
     data = request.json
 
     print(f"###############################\n{data}\n#############################")  # Comment to hide what Telegram is sending you
-    chat_id = data['message']['chat']['id']
+    chat = data['message']['chat']
     input_message = data['message']['text']
 
-    messages, chat_id = bot.reply(input_message, chat_id)
+    messages, chat_id = bot.reply(input_message, chat)
 
     for message in messages:
         json_data = {

@@ -1,6 +1,5 @@
 import hashlib
 from datetime import datetime
-from xbot.xbotdb import Xbotdb
 
 
 def create_token(user_name):
@@ -18,7 +17,7 @@ class User:
     telegram_name: RNogales
     telegram_channels: ['@canalejemplo', '@chollos']
     """
-    def __init__(self, *args, telegramName=None, chatId=None, type='free', amazonTag=None, telegramChannels=[], referrals=[]):
+    def __init__(self, telegramName=None, chatId=None, type='free', amazonTag=None, telegramChannels=[], referrals=[]):
         self.telegram_name = telegramName
         self.amazon_tag = amazonTag
         self.type = type
@@ -29,14 +28,23 @@ class User:
         self.referrals = referrals
         self.last_modify = self.creation_timestamp
 
+    @classmethod
+    def load_from_bd(cls, user_dict):
+        user = User(telegramName=user_dict['telegramName'],
+                    chatId=user_dict['chatId'],
+                    type=user_dict['type'],
+                    telegramChannels=user_dict['telegramChannels'],
+                    referrals=user_dict['referrals'],
+                    amazonTag=user_dict['amazonTag']
+                    )
+        user.token = user_dict['token']
+        return user
+
     def __str__(self):
         return f'User: [{self.telegram_name}, {self.amazon_tag}, {self.telegram_channels},{self.referrals}, {self.token} ]'
 
     def get_telegram_name(self):
         return self.telegram_name
-
-    def save(self):
-        Xbotdb.insert_user(user=self)
 
     def to_dict(self):
         u = {'telegramName': self.telegram_name,

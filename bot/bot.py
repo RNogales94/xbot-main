@@ -48,7 +48,7 @@ class Bot:
     @staticmethod
     def __create_new_user(chat):
         new_user = User(chatId=chat['id'], telegramName=chat['username'])
-        new_user.save()
+        Xbotdb.insert_user(user=new_user)
 
     @staticmethod
     def __get_intent(message):
@@ -97,7 +97,7 @@ class Bot:
     def __format_urls(message, chat):
         print("<<<<<<<<<<<<<<<<<<<<<<< Format url trace ")
         urls = capture_urls(message)
-        user = Xbotdb.get_user_by_chat_id(chat['id'])
+        user = db.get_user_by_chat_id(chat_id=chat['id'])
         print(urls)
         responses = Proxy().scrape(urls)
         print("Scrape response")

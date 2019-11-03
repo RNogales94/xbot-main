@@ -66,7 +66,8 @@ class Xbotdb():
             chat_id = str(chat_id)
         user = self.users.find_one({'chatId': chat_id})
         if user is not None:
-            return User(user)
+            user = User.load_from_bd(user)
+            return user
         else:
             return None
 
