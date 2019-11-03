@@ -83,11 +83,13 @@ class Bot:
     @staticmethod
     def __help(message, chat):
         print('help')
-        return [f'Envia links de productos de amazon para conseguir un mensaje con la oferta lista para reenviar a tu canal!\n' \
-               f'\nLista de comandos disponibles:\n\n ' \
-               f'/tag <new_tag>  --> Cambia tu tag de amazon\n' \
-               f'/cupon <CODE> <PRICE> <LINK> --> Crea un mensaje con cupon (importante no dejar espacios entre el precio y el simbolo del €)' \
-               f'/help --> Ver este mensaje de ayuda']
+        # return [f'Envia links de productos de amazon para conseguir un mensaje con la oferta lista para reenviar a tu canal!\n'
+        #         f'\nLista de comandos disponibles:\n\n '
+        #         f'/tag <new_tag>  --> Cambia tu tag de amazon\n'
+        #         f'/cupon <CODE> <PRICE> <LINK> --> Crea un mensaje con cupon (importante no dejar espacios entre el precio y el simbolo del €)'
+        #         f'/help --> Ver este mensaje de ayuda']
+        return [f'/tag <new_tag>  --> Cambia tu tag de amazon']
+
 
     @staticmethod
     def __tag(message, chat):
