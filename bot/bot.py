@@ -80,16 +80,14 @@ class Bot:
             self.__create_new_user(chat)
         return [f'Hola ! Bienvenido a Xbot usa /help para ver las opciones de configuración']
 
-    def __help(self, message, chat):
+    @staticmethod
+    def __help(message, chat):
         # if user is not registered register user
-        return f'Envia links de productos de amazon para conseguir un mensaje con la oferta lista para reenviar a tu canal!\n' \
+        return [f'Envia links de productos de amazon para conseguir un mensaje con la oferta lista para reenviar a tu canal!\n' \
                f'\nLista de comandos disponibles:\n\n ' \
                f'/tag <new_tag>  --> Cambia tu tag de amazon\n' \
                f'/cupon <CODE> <PRICE> <LINK> --> Crea un mensaje con cupon (importante no dejar espacios entre el precio y el simbolo del €)' \
-               f'/help --> Ver este mensaje de ayuda'
-
-
-
+               f'/help --> Ver este mensaje de ayuda']
 
     @staticmethod
     def __tag(message, chat):
@@ -109,7 +107,6 @@ class Bot:
             return [f"Perfecto tu tag ahora es {new_tag}"]
         except:
             return [f"Ha habido un error no esperado en /tag, por favor contacta con el administrador"]
-
 
     @staticmethod
     def __coupon_product(message, chat):
