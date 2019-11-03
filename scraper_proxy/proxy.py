@@ -42,10 +42,10 @@ class Proxy:
         :param user_type: (optional) user type valid values "PRO" "BOT" "STANDARD"
         :return: A list of JSON with all the features extracted for each url
         """
-        if type(url) == type(list()):
+        if isinstance(url, list):
             urls = url
             result = [self.__scrape(url) for url in urls]
-        if type(url) == type('string'):
+        if isinstance(url, str):
             result = [self.__scrape(url)]
 
         return result

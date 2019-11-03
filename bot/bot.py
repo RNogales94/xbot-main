@@ -7,7 +7,7 @@ from bot.message_customizer import MessageCustomizer
 from xbot.xbotdb import Xbotdb
 from xbot.models.user import User
 from bot.message import Message
-from utils.register_utils import is_change_tag_message, get_amazon_tag
+from utils.regex_utils import is_change_tag_message, get_amazon_tag, get_coupon_info
 
 db = Xbotdb()
 
@@ -95,6 +95,19 @@ class Bot:
             return [f"Perfecto tu tag ahora es {new_tag}"]
         except:
             return [f"Ha habido un error no esperado en /tag, por favor contacta con el administrador"]
+
+
+    @staticmethod
+    def __coupon_product(message, chat):
+        cupon = get_coupon_info(message)
+        user = db.get_user_by_chat_id(chat_id=chat['id'])
+
+        responses = Proxy().scrape(cupon['link'])
+        products = [ProductFactory.build_product_from_json(obj['data']) for obj in responses]
+        messages = [MessageCustomizer.build_message(product, user, cupon) for product in products]
+        text_messages = [str(message) for message in messages]
+        return text_messages
+
 
 
     @staticmethod

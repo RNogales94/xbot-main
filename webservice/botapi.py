@@ -103,6 +103,10 @@ def main():
 
     messages, chat_id = bot.reply(input_message, chat)
 
+    # Avoid flood
+    if isinstance(messages, str):
+        messages = [messages]
+
     for message in messages:
         json_data = {
             "chat_id": chat_id,
