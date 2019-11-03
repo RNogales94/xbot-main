@@ -30,6 +30,8 @@ class Bot:
             return 'tag'
         if message == "/start":
             return 'start'
+        if message == "/help":
+            return 'help'
         if contain_urls(message):
             return 'build_product_message'
         return 'no_intent'
