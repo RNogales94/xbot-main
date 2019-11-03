@@ -117,9 +117,14 @@ class Bot:
 
     @staticmethod
     def __build_product_message(message, chat):
+
+
         print("<<<<<<<<<<<<<<<<<<<<<<< Format url trace ")
         urls = capture_urls(message)
         user = db.get_user_by_chat_id(chat_id=chat['id'])
+        cupon = get_coupon_info(message)
+        if cupon is not None:
+            urls = cupon['urls']
         print(urls)
         responses = Proxy().scrape(urls)
         print("Scrape response")
@@ -127,7 +132,7 @@ class Bot:
         products = [ProductFactory.build_product_from_json(obj['data']) for obj in responses]
         print("Products built")
         print(products)
-        messages = [MessageCustomizer.build_message(product, user) for product in products]
+        messages = [MessageCustomizer.build_message(product, user, cupon) for product in products]
         print("Messages")
         print(messages)
         text_messages = [str(message) for message in messages]

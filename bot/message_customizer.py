@@ -19,7 +19,7 @@ class MessageCustomizer:
                 cupon = {
                         'code': args[0],
                         'final_price': args[1],
-                        'link': args[2]
+                        'urls': args[2]
                         }
         """
 

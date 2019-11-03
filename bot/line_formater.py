@@ -116,9 +116,11 @@ class LineFormater:
             coupon_price = coupon['final_price']
             code = coupon['code']
             # <b>(Pulsa sobre &#128070; el cupón para copiarlo)</b>
-            if style == 'default':
-                coupon_line = f'\n<b>PRECIO CON CUPÓN: {coupon_price} {cls.emoji["check"]}</b>\n#CUPÓN: {code}\n\n'
-                return coupon_line
+            coupon_line = {
+                'default': f'\n<b>PRECIO CON CUPÓN: {coupon_price} {cls.emoji["check"]}</b>\n#CUPÓN: {code}\n\n'
+            }
+            line = coupon_line
+            return line.get(style, line['default'])
         else:
             return ''
 

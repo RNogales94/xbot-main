@@ -28,9 +28,9 @@ def get_coupon_info(message):
         groups = pattern.match(message).groups()
         code = groups[0]
         price = groups[1]
-        url = capture_urls(groups[2])[0]
+        urls = capture_urls(groups[2])
         return {'code': code,
                 'final_price': price,
-                 'link': url}
+                 'urls': urls}
     else:
         return None
