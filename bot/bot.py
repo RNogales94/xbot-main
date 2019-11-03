@@ -48,7 +48,7 @@ class Bot:
     @staticmethod
     def __create_new_user(chat):
         new_user = User(chatId=chat['id'], telegramName=chat['username'])
-        Xbotdb.insert_user(user=new_user)
+        db.insert_user(user=new_user)
 
     @staticmethod
     def __get_intent(message):

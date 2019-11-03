@@ -58,7 +58,7 @@ class MessageCustomizer:
                             link_line=LineFormater.get_link_line(url=url, style=style),
                             watched_in_line=LineFormater.watched_in(style=style)
                         )
-
+            print(msg)
             return msg
 
         else:
