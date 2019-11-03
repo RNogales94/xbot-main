@@ -17,6 +17,7 @@ class Bot:
     def __init__(self):
         self.__handle_intent = {
             'start': self.__start,
+            'help': self.__help,
             'no_intent': self.__not_understood,
             'url_detected': self.__show_urls,
             'build_product_message': self.__build_product_message,
@@ -76,6 +77,17 @@ class Bot:
         if user is None:
             self.__create_new_user(chat)
         return [f'Hola ! Bienvenido a Xbot usa /help para ver las opciones de configuración']
+
+    def __help(self, message, chat):
+        # if user is not registered register user
+        return f'Envia links de productos de amazon para conseguir un mensaje con la oferta lista para reenviar a tu canal!\n' \
+               f'\nLista de comandos disponibles:\n\n ' \
+               f'/tag <new_tag>  --> Cambia tu tag de amazon\n' \
+               f'/cupon <CODE> <PRICE> <LINK> --> Crea un mensaje con cupon (importante no dejar espacios entre el precio y el simbolo del €)' \
+               f'/help --> Ver este mensaje de ayuda'
+
+
+
 
     @staticmethod
     def __tag(message, chat):
