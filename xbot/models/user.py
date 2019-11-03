@@ -32,12 +32,13 @@ class User:
     def load_from_bd(cls, user_dict):
         user = User(telegramName=user_dict['telegramName'],
                     chatId=user_dict['chatId'],
-                    type=user_dict['type'],
+                    type=user_dict.get('type', 'free'),
                     telegramChannels=user_dict['telegramChannels'],
                     referrals=user_dict['referrals'],
                     amazonTag=user_dict['amazonTag']
                     )
         user.token = user_dict['token']
+
         return user
 
     def __str__(self):
@@ -49,6 +50,7 @@ class User:
     def to_dict(self):
         u = {'telegramName': self.telegram_name,
              'amazonTag': self.amazon_tag,
+             'type': self.type,
              'telegramChannels': self.telegram_channels,
              'referrals': self.referrals,
              'token': self.token,

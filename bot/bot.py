@@ -75,7 +75,7 @@ class Bot:
         user = db.get_user_by_chat_id(chat['id'])
         if user is None:
             self.__create_new_user(chat)
-        return [f'Hola ! Bienvenido a Xbot']
+        return [f'Hola ! Bienvenido a Xbot usa /help para ver las opciones de configuración']
 
     @staticmethod
     def __register(message):

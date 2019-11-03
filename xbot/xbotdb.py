@@ -62,9 +62,9 @@ class Xbotdb():
         return usernames
 
     def get_user_by_chat_id(self, chat_id):
-        if isinstance(chat_id, int):
-            chat_id = str(chat_id)
-        user = self.users.find_one({'chatId': chat_id})
+        user = self.users.find_one({'chatId': str(chat_id)})
+        if user is None:
+            user = self.users.find_one({'chatId': int(chat_id)})
         if user is not None:
             user = User.load_from_bd(user)
             return user
