@@ -7,7 +7,7 @@ from bot.message_customizer import MessageCustomizer
 from xbot.xbotdb import Xbotdb
 from xbot.models.user import User
 from bot.message import Message
-from utils.register_utils import is_register_message
+from utils.register_utils import is_change_tag_message, get_amazon_tag
 
 db = Xbotdb()
 
@@ -16,12 +16,22 @@ db = Xbotdb()
 class Bot:
     def __init__(self):
         self.__handle_intent = {
-            'salutation': self.__welcome,
+            'start': self.__start,
             'no_intent': self.__not_understood,
             'url_detected': self.__show_urls,
-            'format_urls': self.__format_urls,
-            'register': self.__register
+            'build_product_message': self.__build_product_message,
+            'tag': self.__tag
         }
+
+    @staticmethod
+    def __get_intent(message):
+        if is_change_tag_message(message):
+            return 'tag'
+        if message == "/start":
+            return 'start'
+        if contain_urls(message):
+            return 'build_product_message'
+        return 'no_intent'
 
     def reply(self, message, chat):
         """
@@ -50,15 +60,7 @@ class Bot:
         new_user = User(chatId=chat['id'], telegramName=chat['username'])
         db.insert_user(user=new_user)
 
-    @staticmethod
-    def __get_intent(message):
-        if is_register_message(message):
-            return 'register'
-        if message == "/start":
-            return 'salutation'
-        if contain_urls(message):
-            return 'format_urls'
-        return 'no_intent'
+
 
     @staticmethod
     def __not_understood(message, chat=None):
@@ -70,7 +72,7 @@ class Bot:
 
         return [choice(responses)]
 
-    def __welcome(self, message, chat):
+    def __start(self, message, chat):
         # if user is not registered register user
         user = db.get_user_by_chat_id(chat['id'])
         if user is None:
@@ -78,12 +80,23 @@ class Bot:
         return [f'Hola ! Bienvenido a Xbot usa /help para ver las opciones de configuración']
 
     @staticmethod
-    def __register(message):
+    def __tag(message, chat):
         """
-        Create a new user from a message such as /register <amazon_tag>
+        Change tag from a message such as /tag <amazon_tag>
         :param message:
         :return: Message of success or fail
         """
+
+        new_tag = get_amazon_tag(message)
+        if new_tag is None:
+            return "Debes escribir una tag valida, solo puedes usar letras, numeros y -\nEjemplo: /tag mitag-01"
+        try:
+            user = db.get_user_by_chat_id(chat_id=['id'])
+
+            db.update_user_tag(user.get_telegram_name(), new_amazon_tag=new_tag)
+            return f"Perfecto tu tag ahora es {new_tag}"
+        except:
+            return f"Ha habido un error no esperado en /tag, por favor contacta con el administrador"
 
 
 
@@ -94,7 +107,7 @@ class Bot:
         return urls
 
     @staticmethod
-    def __format_urls(message, chat):
+    def __build_product_message(message, chat):
         print("<<<<<<<<<<<<<<<<<<<<<<< Format url trace ")
         urls = capture_urls(message)
         user = db.get_user_by_chat_id(chat_id=chat['id'])
