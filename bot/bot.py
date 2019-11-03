@@ -82,7 +82,7 @@ class Bot:
 
     @staticmethod
     def __help(message, chat):
-        # if user is not registered register user
+        print('help')
         return [f'Envia links de productos de amazon para conseguir un mensaje con la oferta lista para reenviar a tu canal!\n' \
                f'\nLista de comandos disponibles:\n\n ' \
                f'/tag <new_tag>  --> Cambia tu tag de amazon\n' \
