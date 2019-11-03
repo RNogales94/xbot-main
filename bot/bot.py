@@ -88,7 +88,7 @@ class Bot:
         #         f'/tag <new_tag>  --> Cambia tu tag de amazon\n'
         #         f'/cupon <CODE> <PRICE> <LINK> --> Crea un mensaje con cupon (importante no dejar espacios entre el precio y el simbolo del €)'
         #         f'/help --> Ver este mensaje de ayuda']
-        return [f'Hola ! Bienvenido a Xbot usa /help para ver las opciones de configuración']
+        return [f'/tag <new_tag> --  Cambia tu tag de amazon']
 
 
     @staticmethod
