@@ -38,7 +38,7 @@ class LineFormater:
             'TheCifu': f'<b>{cls.emoji["blue_diamond"]} {title} {cls.emoji["blue_diamond"]}</b> \n\n',
             'Katka95': f'<b>{cls.emoji["blue_diamond"]} {title} {cls.emoji["blue_diamond"]}</b> \n\n',
         }
-        return title_lines[style] or title_lines['default']
+        return title_lines.get(style, title_lines['default'])
 
     @classmethod
     def __get_description_line_text(cls, description, features, coupon):
@@ -62,14 +62,15 @@ class LineFormater:
         return description_line
 
     @classmethod
-    def get_description_line(cls, description, features, coupon, style='default'):
+    def get_description_line(cls, description, features=None, coupon=None, style='default'):
         description_line = {
             'default': '',
             'TheCifu': f'{cls.emoji["microphone"]} CHOLLAZO: {cls.__get_description_line_text(description, features, coupon)} {cls.emoji["bangbang"]}\n\n',
             'Katka95': f'{cls.emoji["microphone"]} {cls.__get_description_line_text(description, features, coupon)} {cls.emoji["bangbang"]}\n\n',
         }
 
-        return description_line[style]
+        line = description_line
+        return line.get(style, line['default'])
 
     @classmethod
     def get_size_line(cls, size, style='default'):
@@ -78,7 +79,8 @@ class LineFormater:
             'TheCifu': f'<b> CHOLLAZO, en diferentes tallas !! </b>\n\n' if size else '',
             'Vincent_Vegaa': '',
         }
-        return size_line[style]
+        line = size_line
+        return line.get(style, line['default'])
 
     @classmethod
     def get_temporal_line(cls, end_date, style='default'):
@@ -86,7 +88,8 @@ class LineFormater:
             'default': f'<b> {cls.emoji["sand_clock"]} Oferta Temporal!! {end_date}</b>\n\n' if end_date else '',
         }
 
-        return temporal_line[style]
+        line = temporal_line
+        return line.get(style, line['default'])
 
     @classmethod
     def get_old_price_line(cls, old_price, style='default'):
@@ -95,7 +98,8 @@ class LineFormater:
                 'default': f'<b>{cls.emoji["red_cross"]} {old_price}</b>\n' if old_price else '',
                 'gavaste': '',
             }
-        return old_price_line[style]
+        line = old_price_line
+        return line.get(style, line['default'])
 
     @classmethod
     def get_price_line(cls, price, style='default'):
@@ -103,7 +107,8 @@ class LineFormater:
             'default': f'<b>{cls.emoji["check"]}{price}</b>\n',
             'Vincent_Vegaa': f'<b>{price} {cls.emoji["check"]} </b>\n',
         }
-        return price_line[style]
+        line = price_line
+        return line.get(style, line['default'])
 
     @classmethod
     def get_coupon_line(cls, coupon, style='default'):
@@ -123,7 +128,10 @@ class LineFormater:
             'default': '',
             'TheCifu': f'{cls.emoji["trolley"]} Tienda: <a href="{url}">#{cls.__get_shop_name(url)} </a>\n\n',
         }
-        return shop_line['default']
+
+        line = shop_line
+        return line.get(style, line['default'])
+
 
     @classmethod
     def __get_shop_name(cls, url):
@@ -142,7 +150,9 @@ class LineFormater:
             'TheCifu': f'\n{cls.emoji["globe"]}<a href="{url}">Ver en {cls.__get_shop_name(url)} </a>\n',
             'Vincent_Vegaa': f'<b>&#x1F6D2;Comprar </b><a href="{url}">aquí</a>\n\n',
         }
-        return link_line[style]
+
+        line = link_line
+        return line.get(style, line['default'])
 
     @classmethod
     def watched_in(cls, style='default'):
@@ -152,7 +162,8 @@ class LineFormater:
             'Katka95': f'<b>&#128064;Visto en: </b><a href="https://t.me/TusChollosBelleza">TusChollosBelleza</a>\n\n',
 
         }
-        return watched_in_line[style]
+        line = watched_in_line
+        return line.get(style, line['default'])
 
 
 

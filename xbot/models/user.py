@@ -1,5 +1,6 @@
 import hashlib
 from datetime import datetime
+from xbot.xbotdb import Xbotdb
 
 
 def create_token(user_name):
@@ -30,6 +31,12 @@ class User:
 
     def __str__(self):
         return f'User: [{self.telegram_name}, {self.amazon_tag}, {self.telegram_channels},{self.referrals}, {self.token} ]'
+
+    def get_telegram_name(self):
+        return self.telegram_name
+
+    def save(self):
+        Xbotdb.insert_user(user=self)
 
     def to_dict(self):
         u = {'telegramName': self.telegram_name,

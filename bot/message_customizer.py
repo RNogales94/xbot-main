@@ -33,20 +33,30 @@ class MessageCustomizer:
         url = product.url
         end_date = product.end_date
 
+        if user is not None:
+            style = user.get_telegram_name()
+        else:
+            style = 'default'
+
         if cls.__has_at_least_minimal_information(product):
 
             msg = Message(
-                            image_url_line=LineFormater.get_image_url_line(img_url),
-                            title_line=LineFormater.get_title_line(title=title),
-                            description_line=LineFormater.get_description_line(description, features, coupon),
-                            size_line=LineFormater.get_size_line(size),
-                            temporal_line=LineFormater.get_temporal_line(end_date),
-                            old_price_line=LineFormater.get_old_price_line(old_price),
-                            price_line=LineFormater.get_price_line(price),
-                            coupon_line=LineFormater.get_coupon_line(coupon),
-                            shop_line=LineFormater.get_shop_line(url),
-                            link_line=LineFormater.get_link_line(url),
-                            watched_in_line=LineFormater.watched_in()
+                            image_url_line=LineFormater.get_image_url_line(img_url=img_url),
+                            title_line=LineFormater.get_title_line(title=title,
+                                                                   style=style),
+                            description_line=LineFormater.get_description_line(description=description,
+                                                                               features=features,
+                                                                               coupon=coupon),
+                            size_line=LineFormater.get_size_line(size=size, style=style),
+                            temporal_line=LineFormater.get_temporal_line(end_date=end_date,
+                                                                         style=style),
+                            old_price_line=LineFormater.get_old_price_line(old_price=old_price,
+                                                                           style=style),
+                            price_line=LineFormater.get_price_line(price=price, style=style),
+                            coupon_line=LineFormater.get_coupon_line(coupon=coupon, style=style),
+                            shop_line=LineFormater.get_shop_line(url=url, style=style),
+                            link_line=LineFormater.get_link_line(url=url, style=style),
+                            watched_in_line=LineFormater.watched_in(style=style)
                         )
 
             return msg
