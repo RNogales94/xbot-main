@@ -12,9 +12,11 @@ def test_exist_user():
 
 
 def test_get_user_by_chat_id():
+
     assert isinstance(db.get_user_by_chat_id(213337828), User)
     assert isinstance(db.get_user_by_chat_id("213337828"), User)
     assert db.get_user_by_chat_id(213337828).telegram_name == 'RNogales'
+    assert db.get_user_by_chat_id("213337828").telegram_name == 'RNogales'
     assert db.get_user_by_chat_id("213337828").chat_id == db.get_user_by_chat_id(213337828).chat_id
     assert db.get_user_by_chat_id(23442342234234234) is None
     assert db.get_user_by_chat_id(15027292).get_telegram_name() == 'sark148'

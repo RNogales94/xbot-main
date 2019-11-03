@@ -60,8 +60,6 @@ class Bot:
         new_user = User(chatId=chat['id'], telegramName=chat['username'])
         db.insert_user(user=new_user)
 
-
-
     @staticmethod
     def __not_understood(message, chat=None):
         responses = ['No he entendido que quieres decir con eso',
@@ -89,16 +87,14 @@ class Bot:
 
         new_tag = get_amazon_tag(message)
         if new_tag is None:
-            return "Debes escribir una tag valida, solo puedes usar letras, numeros y -\nEjemplo: /tag mitag-01"
+            return ["Debes escribir una tag valida, solo puedes usar letras, numeros y -\nEjemplo: /tag mitag-01"]
         try:
-            user = db.get_user_by_chat_id(chat_id=['id'])
+            user = db.get_user_by_chat_id(chat_id=chat['id'])
 
             db.update_user_tag(user.get_telegram_name(), new_amazon_tag=new_tag)
-            return f"Perfecto tu tag ahora es {new_tag}"
+            return [f"Perfecto tu tag ahora es {new_tag}"]
         except:
-            return f"Ha habido un error no esperado en /tag, por favor contacta con el administrador"
-
-
+            return [f"Ha habido un error no esperado en /tag, por favor contacta con el administrador"]
 
 
     @staticmethod
