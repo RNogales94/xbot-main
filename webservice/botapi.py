@@ -97,7 +97,7 @@ def get_todays_offers_from_amazon():
 def main():
     data = request.json
 
-    print(f"###############################\n{data}\n#############################")  # Comment to hide what Telegram is sending you
+    print(f"###############################\n{json.dumps(data)}\n#############################")  # Comment to hide what Telegram is sending you
 
     try:
         chat = data['message']['chat']
