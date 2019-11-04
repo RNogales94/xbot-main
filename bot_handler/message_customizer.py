@@ -1,5 +1,5 @@
-from bot.line_formater import LineFormater
-from bot.message import Message
+from bot_handler.line_formater import LineFormater
+from bot_handler.message import Message
 from utils.amazon.tools import AmazonTools
 from utils.singleton import Singleton
 

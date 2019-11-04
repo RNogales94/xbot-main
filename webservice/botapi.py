@@ -4,8 +4,8 @@ from flask_cors import CORS
 from utils.url_utils import is_aliexpress, capture_urls
 from xbot.xbotdb import Xbotdb
 from xbot.utils.product_factory import ProductFactory
-from bot.telegram_config import BOT_URL
-from bot.bot import Bot
+from bot_handler.telegram_config import BOT_URL
+from bot_handler.bot import Bot
 import requests
 from utils.amazon.tools import AmazonTools
 
@@ -93,22 +93,13 @@ def get_todays_offers_from_amazon():
     pass
 
 
-@xbot_webservice.route('/bot', methods=['POST'])
+@xbot_webservice.route('/bot_handler', methods=['POST'])
 def main():
     data = request.json
 
     print(f"###############################\n{json.dumps(data)}\n#############################")  # Comment to hide what Telegram is sending you
 
-    try:
-        chat = data['message']['chat']
-    except KeyError:
-        chat = data['edited_message']['chat']
-    try:
-        input_message = data['message']['text']
-    except KeyError:
-        input_message = data['message']['caption']
-
-    messages, chat_id = bot.reply(input_message, chat)
+    messages, chat_id = bot.reply(data)
 
     # Avoid flood
     if isinstance(messages, str):

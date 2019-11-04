@@ -1,4 +1,4 @@
-from bot.line_formater import LineFormater
+from bot_handler.line_formater import LineFormater
 from lxml import etree
 from io import StringIO
 

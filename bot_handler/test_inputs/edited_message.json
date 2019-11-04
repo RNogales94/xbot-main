@@ -1,0 +1,68 @@
+{
+    "update_id": 106841887,
+    "edited_message": {
+        "message_id": 78853,
+        "from": {
+            "id": 9623929,
+            "is_bot": false,
+            "first_name": "Vincent",
+            "last_name": "Vega",
+            "username": "Vincent_Vegaa",
+            "language_code": "es"
+        },
+        "chat": {
+            "id": 9623929,
+            "first_name": "Vincent",
+            "last_name": "Vega",
+            "username": "Vincent_Vegaa",
+            "type": "private"
+        },
+        "date": 1572892983,
+        "edit_date": 1572892991,
+        "text": "‍ kisshes Hombres Chaquetas Impermeable de Manga Larga a Prueba de Viento Hombres Chaqueta Softshell Abrigo Outwear Cremallera con Capucha\n\n119,96 € ✅ \n\nPRECIO CON CUPÓN: 35,99€ ✅\n#CUPÓN: CE6HNRML\n\n🛒Comprar aquí",
+        "entities": [
+            {
+                "offset": 0,
+                "length": 1,
+                "type": "text_link",
+                "url": "https://images-na.ssl-images-amazon.com/images/I/61EBFJ0KPPL._UL1050_.jpg"
+            },
+            {
+                "offset": 1,
+                "length": 137,
+                "type": "bold"
+            },
+            {
+                "offset": 140,
+                "length": 11,
+                "type": "bold"
+            },
+            {
+                "offset": 153,
+                "length": 26,
+                "type": "bold"
+            },
+            {
+                "offset": 180,
+                "length": 6,
+                "type": "hashtag"
+            },
+            {
+                "offset": 188,
+                "length": 8,
+                "type": "code"
+            },
+            {
+                "offset": 198,
+                "length": 10,
+                "type": "bold"
+            },
+            {
+                "offset": 208,
+                "length": 4,
+                "type": "text_link",
+                "url": "[https://www.amazon.es/dp/B07YTHJW5X?tag=koko01a-21]"
+            }
+        ]
+    }
+}

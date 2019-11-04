@@ -3,13 +3,14 @@ from random import choice
 from utils.url_utils import contain_urls, capture_urls
 from scraper_proxy.proxy import Proxy
 from xbot.utils.product_factory import ProductFactory
-from bot.message_customizer import MessageCustomizer
+from bot_handler.message_customizer import MessageCustomizer
+from bot_handler.input_transformer import InputTransformer
 from xbot.xbotdb import Xbotdb
 from xbot.models.user import User
 from utils.regex_utils import is_change_tag_message, get_amazon_tag, get_coupon_info
 
 db = Xbotdb()
-
+it = InputTransformer()
 
 class Bot(metaclass=Singleton):
     def __init__(self):
@@ -34,15 +35,17 @@ class Bot(metaclass=Singleton):
             return 'build_product_message'
         return 'no_intent'
 
-    def reply(self, message, chat):
+    def reply(self, data_json):
         """
         reply to the indicate user an appropiate response based on the incoming message.
         Internally it detect the intent and create a custom response for the user caller.
 
-        :param message:
-        :param chat: dictionary with id, username and is_bot
-        :return: message, chat_id
+        :param data_json: request body from telegram
+        :return: message, chat
         """
+
+        message, chat, links = it.capture_input_data(data_json)
+
         chat_id = chat['id']
         intent = self.__get_intent(message)
         message = self.__reply_to(intent, message, chat)

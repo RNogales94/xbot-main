@@ -1,0 +1,30 @@
+{
+    "update_id": 106841896,
+    "message": {
+        "message_id": 78865,
+        "from": {
+            "id": 213337828,
+            "is_bot": false,
+            "first_name": "Rafa",
+            "last_name": "Nogales",
+            "username": "RNogales",
+            "language_code": "es"
+        },
+        "chat": {
+            "id": 213337828,
+            "first_name": "Rafa",
+            "last_name": "Nogales",
+            "username": "RNogales",
+            "type": "private"
+        },
+        "date": 1572899459,
+        "text": "https://www.amazon.es/dp/B07N2TJDKN?tag=hhhh",
+        "entities": [
+            {
+                "offset": 0,
+                "length": 44,
+                "type": "url"
+            }
+        ]
+    }
+}

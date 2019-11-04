@@ -7,6 +7,21 @@ REGISTER_SUCCESS = ""
 OTHERL_ERROR = ""
 
 
+def fix_url_if_comes_in_list(url):
+    if isinstance(url, str):
+        pattern = re.compile(r"^\[.*\]$")
+        if pattern.match(url) is not None:
+            url = url[1:]
+            url = url[:-1]
+            return url
+    return url
+
+
+def is_image_url(url):
+    pattern = re.compile(r"http.*(\.jpg)|(\.png)|(\.gif)|(\.jpeg)$")
+    print(pattern.match(url) is not None)
+    return pattern.match(url) is not None
+
 def is_change_tag_message(message):
     pattern = re.compile(r"^/tag(\s[\w\-]+)*$")
     print(pattern.match(message) is not None)
