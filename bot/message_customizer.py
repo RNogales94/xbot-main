@@ -38,14 +38,13 @@ class MessageCustomizer:
         size = product.size
         old_price = product.standard_price
         img_url = product.image_url
-        if tag is not None:
+
+        if tag is None:
             url = product.url
         else:
             url = AmazonTools.modify_url(url=product.url, tag=tag)
 
         end_date = product.end_date
-
-
 
         if cls.__has_at_least_minimal_information(product):
 

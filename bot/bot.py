@@ -17,6 +17,7 @@ class Bot:
     def __init__(self):
         self.__handle_intent = {
             'start': self.__start,
+            'help': self.__help,
             'no_intent': self.__not_understood,
             'url_detected': self.__show_urls,
             'build_product_message': self.__build_product_message,
@@ -29,6 +30,8 @@ class Bot:
             return 'tag'
         if message == "/start":
             return 'start'
+        if message == "/help":
+            return 'help'
         if contain_urls(message):
             return 'build_product_message'
         return 'no_intent'
@@ -78,6 +81,17 @@ class Bot:
         return [f'Hola ! Bienvenido a Xbot usa /help para ver las opciones de configuración']
 
     @staticmethod
+    def __help(message, chat):
+        print('help')
+        # return [f'Envia links de productos de amazon para conseguir un mensaje con la oferta lista para reenviar a tu canal!\n'
+        #         f'\nLista de comandos disponibles:\n\n '
+        #         f'/tag <new_tag>  --> Cambia tu tag de amazon\n'
+        #         f'/cupon <CODE> <PRICE> <LINK> --> Crea un mensaje con cupon (importante no dejar espacios entre el precio y el simbolo del €)'
+        #         f'/help --> Ver este mensaje de ayuda']
+        return [f'/tag <new_tag> --  Cambia tu tag de amazon']
+
+
+    @staticmethod
     def __tag(message, chat):
         """
         Change tag from a message such as /tag <amazon_tag>
@@ -95,7 +109,6 @@ class Bot:
             return [f"Perfecto tu tag ahora es {new_tag}"]
         except:
             return [f"Ha habido un error no esperado en /tag, por favor contacta con el administrador"]
-
 
     @staticmethod
     def __coupon_product(message, chat):
