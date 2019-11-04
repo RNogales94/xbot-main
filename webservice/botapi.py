@@ -101,10 +101,12 @@ def main():
 
     try:
         chat = data['message']['chat']
-        input_message = data['message']['text']
     except KeyError:
         chat = data['edited_message']['chat']
-        input_message = data['edited_message']['text']
+    try:
+        input_message = data['message']['text']
+    except KeyError:
+        input_message = data['message']['caption']
 
     messages, chat_id = bot.reply(input_message, chat)
 
