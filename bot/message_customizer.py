@@ -1,5 +1,6 @@
 from bot.line_formater import LineFormater
 from bot.message import Message
+from utils.amazon.tools import AmazonTools
 
 
 class MessageCustomizer:
@@ -23,6 +24,13 @@ class MessageCustomizer:
                         }
         """
 
+        if user is not None:
+            style = user.get_telegram_name()
+            tag = user.amazon_tag
+        else:
+            style = 'default'
+            tag = None
+
         title = product.title
         description = product.description
         features = product.features
@@ -30,13 +38,14 @@ class MessageCustomizer:
         size = product.size
         old_price = product.standard_price
         img_url = product.image_url
-        url = product.url
+        if tag is not None:
+            url = product.url
+        else:
+            url = AmazonTools.modify_url(url=product.url, tag=tag)
+
         end_date = product.end_date
 
-        if user is not None:
-            style = user.get_telegram_name()
-        else:
-            style = 'default'
+
 
         if cls.__has_at_least_minimal_information(product):
 
