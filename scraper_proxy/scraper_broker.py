@@ -19,8 +19,8 @@ class ScraperBroker(metaclass=Singleton):
     @staticmethod
     def restart_scraper(scraper_address):
         r = requests.delete(f'https://api.heroku.com/apps/{get_app_name(scraper_address)}/dynos/web.1', headers={
-            'Content-Type': 'application/json',
-            'Accept': 'application/vnd.heroku+json; version=3',
+            'Content-Type': 'application/fw.json',
+            'Accept': 'application/vnd.heroku+fw.json; version=3',
         }, auth=(os.environ['HEROKU_SCRAPERS_USER'], os.environ['HEROKU_SCRAPERS_PASS']))
         print(f'Restarting {get_app_name(scraper_address)}')
         print(f'{r.content}')
