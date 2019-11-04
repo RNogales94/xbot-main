@@ -6,8 +6,7 @@ from scraper_proxy.config import baned_users
 from scraper_proxy.config import SCRAPER_ENDPOINT
 
 
-@Singleton
-class Proxy:
+class Proxy(metaclass=Singleton):
     def __init__(self):
         self.scrape_broker = ScraperBroker()
 

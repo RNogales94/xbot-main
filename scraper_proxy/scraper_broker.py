@@ -7,8 +7,7 @@ from utils.url_utils import get_app_name
 from scraper_proxy.config import SCRAPERS, SCRAPERS_PRO, SCRAPERS_XBOT, pro_users
 
 
-@Singleton
-class ScraperBroker:
+class ScraperBroker(metaclass=Singleton):
     def __init__(self):
         # self.current_scraper = random.choice(SCRAPERS)
         self.current_scraper_pro = random.choice(SCRAPERS_PRO)

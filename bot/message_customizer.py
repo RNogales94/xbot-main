@@ -1,9 +1,10 @@
 from bot.line_formater import LineFormater
 from bot.message import Message
 from utils.amazon.tools import AmazonTools
+from utils.singleton import Singleton
 
 
-class MessageCustomizer:
+class MessageCustomizer(metaclass=Singleton):
 
     @classmethod
     def __has_at_least_minimal_information(cls, product):

@@ -1,8 +1,9 @@
 # from utils.web_utils import is_aliexpress, is_amazon
 from utils.amazon.tools import AmazonTools
+from utils.singleton import Singleton
 
 
-class LineFormater:
+class LineFormater(metaclass=Singleton):
 
     emoji = {
         # Positive

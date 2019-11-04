@@ -6,14 +6,12 @@ from xbot.utils.product_factory import ProductFactory
 from bot.message_customizer import MessageCustomizer
 from xbot.xbotdb import Xbotdb
 from xbot.models.user import User
-from bot.message import Message
 from utils.regex_utils import is_change_tag_message, get_amazon_tag, get_coupon_info
 
 db = Xbotdb()
 
 
-@Singleton
-class Bot:
+class Bot(metaclass=Singleton):
     def __init__(self):
         self.__handle_intent = {
             'start': self.__start,
@@ -90,7 +88,6 @@ class Bot:
         #         f'/help --> Ver este mensaje de ayuda']
         return [f'/tag <new_tag> --  Cambia tu tag de amazon']
 
-
     @staticmethod
     def __tag(message, chat):
         """
@@ -121,8 +118,6 @@ class Bot:
         text_messages = [str(message) for message in messages]
         return text_messages
 
-
-
     @staticmethod
     def __show_urls(message, chat=None):
         urls = capture_urls(message)
@@ -130,7 +125,6 @@ class Bot:
 
     @staticmethod
     def __build_product_message(message, chat):
-
 
         print("<<<<<<<<<<<<<<<<<<<<<<< Format url trace ")
         urls = capture_urls(message)

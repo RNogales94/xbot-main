@@ -3,13 +3,14 @@ import pymongo
 from datetime import datetime
 import os
 
+from utils.singleton import Singleton
 from xbot.models.user import User
 
 print('Setting up config')
 print(os.environ['MONGO_USER'])
 
 
-class Xbotdb():
+class Xbotdb(metaclass=Singleton):
     def __init__(self):
         mongo_user = os.environ['MONGO_USER']
         mongo_pass = os.environ['MONGO_PASS']
