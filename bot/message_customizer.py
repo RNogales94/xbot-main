@@ -38,7 +38,7 @@ class MessageCustomizer:
         size = product.size
         old_price = product.standard_price
         img_url = product.image_url
-        if tag is not None:
+        if tag is None:
             url = product.url
         else:
             url = AmazonTools.modify_url(url=product.url, tag=tag)
