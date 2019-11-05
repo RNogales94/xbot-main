@@ -93,7 +93,7 @@ def get_todays_offers_from_amazon():
     pass
 
 
-@xbot_webservice.route('/bot_handler', methods=['POST'])
+@xbot_webservice.route('/bot', methods=['POST'])
 def main():
     data = request.json
 

@@ -12,26 +12,29 @@ from utils.regex_utils import is_change_tag_message, get_amazon_tag, get_coupon_
 db = Xbotdb()
 it = InputTransformer()
 
+
 class Bot(metaclass=Singleton):
     def __init__(self):
         self.__handle_intent = {
             'start': self.__start,
             'help': self.__help,
             'no_intent': self.__not_understood,
-            'url_detected': self.__show_urls,
             'build_product_message': self.__build_product_message,
             'tag': self.__tag
         }
 
     @staticmethod
-    def __get_intent(message):
+    def __get_intent(data):
+        message = data['message']
+        links = data['links']
+
         if is_change_tag_message(message):
             return 'tag'
         if message == "/start":
             return 'start'
         if message == "/help":
             return 'help'
-        if contain_urls(message):
+        if contain_urls(message) or len(links):
             return 'build_product_message'
         return 'no_intent'
 
@@ -44,28 +47,29 @@ class Bot(metaclass=Singleton):
         :return: message, chat
         """
 
-        message, chat, links = it.capture_input_data(data_json)
+        data = it.capture_input_data(data_json)
+        chat_id = data['chat']['id']
 
-        chat_id = chat['id']
-        intent = self.__get_intent(message)
-        message = self.__reply_to(intent, message, chat)
+        intent = self.__get_intent(data)
+        message = self.__reply_to(intent, data)
 
         return message, chat_id
 
-    def __reply_to(self, intent, message, chat):
+    def __reply_to(self, intent, data):
 
         message_handler = self.__handle_intent[intent]
-        response_text = message_handler(message, chat)
+        response_text = message_handler(data)
 
         return response_text
 
     @staticmethod
-    def __create_new_user(chat):
+    def __create_new_user(data):
+        chat = data['chat']
         new_user = User(chatId=chat['id'], telegramName=chat['username'])
         db.insert_user(user=new_user)
 
     @staticmethod
-    def __not_understood(message, chat=None):
+    def __not_understood(data):
         responses = ['No he entendido que quieres decir con eso',
                       'No lo he entendido, prueba con algo diferente',
                       'No he entendido eso, prueba con una URL o un comando',
@@ -74,15 +78,16 @@ class Bot(metaclass=Singleton):
 
         return [choice(responses)]
 
-    def __start(self, message, chat):
+    def __start(self, data):
         # if user is not registered register user
+        chat = data['chat']
         user = db.get_user_by_chat_id(chat['id'])
         if user is None:
             self.__create_new_user(chat)
         return [f'Hola ! Bienvenido a Xbot usa /help para ver las opciones de configuración']
 
     @staticmethod
-    def __help(message, chat):
+    def __help(data):
         print('help')
         # return [f'Envia links de productos de amazon para conseguir un mensaje con la oferta lista para reenviar a tu canal!\n'
         #         f'\nLista de comandos disponibles:\n\n '
@@ -92,12 +97,15 @@ class Bot(metaclass=Singleton):
         return [f'/tag <new_tag> --  Cambia tu tag de amazon']
 
     @staticmethod
-    def __tag(message, chat):
+    def __tag(data):
         """
         Change tag from a message such as /tag <amazon_tag>
         :param message:
         :return: Message of success or fail
         """
+
+        message = data['message']
+        chat = data['chat']
 
         new_tag = get_amazon_tag(message)
         if new_tag is None:
@@ -110,28 +118,28 @@ class Bot(metaclass=Singleton):
         except:
             return [f"Ha habido un error no esperado en /tag, por favor contacta con el administrador"]
 
-    @staticmethod
-    def __coupon_product(message, chat):
-        cupon = get_coupon_info(message)
-        user = db.get_user_by_chat_id(chat_id=chat['id'])
+    # @staticmethod
+    # def __coupon_product(message, chat):
+    #     cupon = get_coupon_info(message)
+    #     user = db.get_user_by_chat_id(chat_id=chat['id'])
+    #
+    #     responses = Proxy().scrape(cupon['link'])
+    #     products = [ProductFactory.build_product_from_json(obj['data']) for obj in responses]
+    #     messages = [MessageCustomizer.build_message(product, user, cupon) for product in products]
+    #     text_messages = [str(message) for message in messages]
+    #     return text_messages
 
-        responses = Proxy().scrape(cupon['link'])
-        products = [ProductFactory.build_product_from_json(obj['data']) for obj in responses]
-        messages = [MessageCustomizer.build_message(product, user, cupon) for product in products]
-        text_messages = [str(message) for message in messages]
-        return text_messages
 
-    @staticmethod
-    def __show_urls(message, chat=None):
-        urls = capture_urls(message)
-        return urls
 
     @staticmethod
-    def __build_product_message(message, chat):
-
+    def __build_product_message(data):
         print("<<<<<<<<<<<<<<<<<<<<<<< Format url trace ")
-        urls = capture_urls(message)
+
+        message = data['message']
+        chat = data['chat']
+        urls = data['links']
         user = db.get_user_by_chat_id(chat_id=chat['id'])
+
         cupon = get_coupon_info(message)
         if cupon is not None:
             urls = cupon['urls']

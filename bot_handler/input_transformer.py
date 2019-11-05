@@ -52,4 +52,5 @@ class InputTransformer(metaclass=Singleton):
         message = self.capture_message(data_json)
         chat = self.capture_chat(data_json)
 
-        return message, chat, links
+        data = {"message": message, "chat": chat, "links": links}
+        return data
