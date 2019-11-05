@@ -4,19 +4,40 @@ from utils.regex_utils import is_image_url, fix_url_if_comes_in_list, capture_ur
 
 class InputTransformer(metaclass=Singleton):
 
+    @staticmethod
+    def __capture_links_from_entities(entities):
+        entities = filter(lambda x: 'url' in x.keys(), entities)
+        links = [e['url'] for e in entities]
+        links = [fix_url_if_comes_in_list(url) for url in links]
+        return links
+
+    def __remove_image_links(self, links):
+        links = filter(lambda x: not is_image_url(x), links)
+        links = list(links)
+        return links
+
     def capture_links(self, data_json):
         links = []
+        msg_links = []
+        entities_links = []
+
         if "edited_message" in data_json.keys():
+            text = data_json['edited_message']['text']
+            msg_links = capture_urls(text)
+
             entities = data_json["edited_message"].get("entities", None)
             if entities is not None:
-                entities = filter(lambda x: 'url' in x.keys(), entities)
-                links = [e['url'] for e in entities]
-                links = [fix_url_if_comes_in_list(url) for url in links]
-                links = filter(lambda x: not is_image_url(x), links)
-                links = list(links)
+                entities_links = self.__capture_links_from_entities(entities)
         if 'message' in data_json.keys():
-            text = self.capture_message(data_json)
-            links = capture_urls(text)
+            text = data_json['message']['text']
+            msg_links = capture_urls(text)
+            entities = data_json["message"].get("entities", None)
+            if entities is not None:
+                entities_links = self.__capture_links_from_entities(entities)
+
+        links = list(set(msg_links + entities_links))
+        links = self.__remove_image_links(links)
+
         return links
 
     @staticmethod

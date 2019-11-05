@@ -10,9 +10,12 @@ with open('/home/rafa/PycharmProjects/xbot-main/bot_handler/test_inputs/edited_m
 with open('/home/rafa/PycharmProjects/xbot-main/bot_handler/test_inputs/standard_message.json') as json_file:
     standard_message = json.load(json_file)
 
+with open('/home/rafa/PycharmProjects/xbot-main/bot_handler/test_inputs/standard_message2.json') as json_file:
+    standard_message2 = json.load(json_file)
+
 it = InputTransformer()
 
-m, c, l = it.capture_input_data(edited_message)
+data = it.capture_input_data(standard_message2)
 
 
 def test_standard_message_input():
@@ -42,6 +45,14 @@ def test_standard_message_input():
     data = it.capture_input_data(message)
     assert "https://www.amazon.es/dp/B07N2TJDKN?tag=hhhh" in data["message"]
     assert [amazon_link] == data["links"]
+    assert 213337828 == data['chat']['id']
+
+    # global test standard message 2
+    message = standard_message2
+
+    data = it.capture_input_data(message)
+    assert len(data["links"]) == 1
+    assert data['links'] == ['https://www.amazon.es/dp/B07N2TJDKN?tag=una']
     assert 213337828 == data['chat']['id']
 
 
