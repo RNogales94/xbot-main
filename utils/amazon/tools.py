@@ -21,17 +21,21 @@ class AmazonTools:
 
     @classmethod
     def modify_url(cls, url, tag, is_user_free=False):
-        if is_user_free and random.random() > GAIN_RATE:
-            tag = os.environ["XBOT_AMAZON_TAG"] or tag
-        url = expand_url(url)
-        tag_pattern = r'tag=[^&]+'
+        if cls.is_amazon(url):
+            if is_user_free and random.random() > GAIN_RATE:
+                tag = os.environ["XBOT_AMAZON_TAG"] or tag
+            url = expand_url(url)
+            tag_pattern = r'tag=[^&]+'
 
-        if re.search(tag_pattern, url):
-            url = re.sub(tag_pattern, 'tag=' + tag, url)
-        else:
-            if '?' in url:
-                url = url + '&tag=' + tag
+            if re.search(tag_pattern, url):
+                url = re.sub(tag_pattern, 'tag=' + tag, url)
             else:
-                url = url + '?tag=' + tag
-        return url
+                if '?' in url:
+                    url = url + '&tag=' + tag
+                else:
+                    url = url + '?tag=' + tag
+            return url
+        else:
+            return url
+
 

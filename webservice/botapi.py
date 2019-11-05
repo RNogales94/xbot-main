@@ -105,17 +105,24 @@ def main():
         # Avoid flood
         if isinstance(messages, str):
             messages = [messages]
-
-        for message in messages:
+        elif messages == []:
+            message = "No he podido sacar datos de ese producto"
             json_data = {
                 "chat_id": chat_id,
                 "text": message,
                 'parse_mode': 'HTML'
             }
+        else:
+            for message in messages:
+                json_data = {
+                    "chat_id": chat_id,
+                    "text": message,
+                    'parse_mode': 'HTML'
+                }
 
-            message_url = BOT_URL + 'sendMessage'
-            requests.post(message_url, json=json_data)
-            return Response(json.dumps(json_data), status=200, mimetype='application/fw.json')
+        message_url = BOT_URL + 'sendMessage'
+        requests.post(message_url, json=json_data)
+        return Response(json.dumps(json_data), status=200, mimetype='application/fw.json')
     except Exception as e:
         print(f"<<--------------- Exception happens ---------\n{e}\n-----------End--------->>")
         return Response(json.dumps({"Error": e}), status=500, mimetype='application/fw.json')

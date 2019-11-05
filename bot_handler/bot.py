@@ -147,6 +147,7 @@ class Bot(metaclass=Singleton):
         responses = Proxy().scrape(urls)
         print("Scrape response")
         print(responses)
+        responses = filter(lambda x: 'Error' not in x['data'].keys(), responses)
         products = [ProductFactory.build_product_from_json(obj['data']) for obj in responses]
         print("Products built")
         print(products)

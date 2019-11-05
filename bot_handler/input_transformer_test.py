@@ -13,9 +13,12 @@ with open('/home/rafa/PycharmProjects/xbot-main/bot_handler/test_inputs/standard
 with open('/home/rafa/PycharmProjects/xbot-main/bot_handler/test_inputs/standard_message2.json') as json_file:
     standard_message2 = json.load(json_file)
 
+with open('/home/rafa/PycharmProjects/xbot-main/bot_handler/test_inputs/fw_no_amazon_message.json') as json_file:
+    fw_no_amazon_message = json.load(json_file)
+
 it = InputTransformer()
 
-data = it.capture_input_data(standard_message2)
+data = it.capture_input_data(fw_no_amazon_message)
 
 
 def test_standard_message_input():
