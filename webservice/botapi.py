@@ -129,7 +129,7 @@ def main():
             "text": "Ha habido un error inesperado con ese producto",
             'parse_mode': 'HTML'
         }
-        requests.post(message_url, json=json_data)
+        requests.post(message_url, json=json_data)  # This can avoid memory leaks
         return Response(json.dumps({"Error": e}), status=500, mimetype='application/fw.json')
 
 

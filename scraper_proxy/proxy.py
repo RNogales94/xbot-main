@@ -2,7 +2,6 @@ import requests
 
 from utils.singleton import Singleton
 from scraper_proxy.scraper_broker import ScraperBroker
-from scraper_proxy.config import baned_users
 from scraper_proxy.config import SCRAPER_ENDPOINT
 
 
@@ -31,7 +30,7 @@ class Proxy(metaclass=Singleton):
                 self.scrape_broker.update_current_scraper(user=None)
                 r = requests.post(f'{scraper}{SCRAPER_ENDPOINT}', json={'url': url})
 
-            return {'data': r.json(), 'status': 200}
+            return {'data': r.json(), 'status': r.status_code}
 
     def scrape(self, url, user_type=None):
         """
