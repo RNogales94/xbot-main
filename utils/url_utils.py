@@ -14,7 +14,12 @@ def contain_urls(text):
 
 def expand_url(url):
     session = requests.Session()  # so connections are recycled
-    resp = session.head(url, allow_redirects=True)
+    try:
+        resp = session.head(url, allow_redirects=True)
+    except requests.exceptions.MissingSchema:
+        print('----> WARNING')
+        print(f'URL {url} cannot be expanded, probably this is not a valid URL, return {None}')
+        return None
     return resp.url
 
 

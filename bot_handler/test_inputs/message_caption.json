@@ -1,0 +1,96 @@
+{
+    "update_id": 106842269,
+    "message": {
+        "message_id": 79802,
+        "from": {
+            "id": 9623929,
+            "is_bot": false,
+            "first_name": "Vincent",
+            "last_name": "Vega",
+            "username": "Vincent_Vegaa",
+            "language_code": "es"
+        },
+        "chat": {
+            "id": 9623929,
+            "first_name": "Vincent",
+            "last_name": "Vega",
+            "username": "Vincent_Vegaa",
+            "type": "private"
+        },
+        "date": 1573127806,
+        "photo": [
+            {
+                "file_id": "AgADBAADBrMxG9ceIVKiGavf5MNFdWlU3RkABAEAAwIAA20AA14LAgABFgQ",
+                "file_size": 13436,
+                "width": 320,
+                "height": 320
+            },
+            {
+                "file_id": "AgADBAADBrMxG9ceIVKiGavf5MNFdWlU3RkABAEAAwIAA3gAA18LAgABFgQ",
+                "file_size": 53001,
+                "width": 800,
+                "height": 800
+            }
+        ],
+        "caption": "Báscula Baño Vigorun Báscula Grasa Corporal, Básculas Digitales con App y 17 Datos del Cuerpo, Balanza Baño para Peso, Músculo, Grasa Corporal, IMC, BMR, Tasa de proteína, Masa Ósea, y así./max 180kg #Amazon.\n\n❌Precio: 29,98 €\n✅Oferta del día: 23,98 €\n📉Ahorras: 6,00 € (20%)\n\n\n🔰Enlace: https://amzn.to/2VhaBsB\n\n💭Chat de dudas y peticiones",
+        "caption_entities": [
+            {
+                "offset": 0,
+                "length": 199,
+                "type": "bold"
+            },
+            {
+                "offset": 200,
+                "length": 7,
+                "type": "hashtag"
+            },
+            {
+                "offset": 207,
+                "length": 1,
+                "type": "text_link",
+                "url": "https://images-na.ssl-images-amazon.com/images/I/61CSlBPIosL..jpg"
+            },
+            {
+                "offset": 210,
+                "length": 8,
+                "type": "bold"
+            },
+            {
+                "offset": 219,
+                "length": 7,
+                "type": "italic"
+            },
+            {
+                "offset": 227,
+                "length": 16,
+                "type": "bold"
+            },
+            {
+                "offset": 244,
+                "length": 7,
+                "type": "italic"
+            },
+            {
+                "offset": 252,
+                "length": 23,
+                "type": "bold"
+            },
+            {
+                "offset": 278,
+                "length": 9,
+                "type": "bold"
+            },
+            {
+                "offset": 288,
+                "length": 23,
+                "type": "url"
+            },
+            {
+                "offset": 313,
+                "length": 28,
+                "type": "text_link",
+                "url": "https://t.me/joinchat/COo0KA9QeGlvO7sPniAyOQ"
+            }
+        ]
+    }
+}

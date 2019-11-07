@@ -22,14 +22,21 @@ class InputTransformer(metaclass=Singleton):
         entities_links = []
 
         if "edited_message" in data_json.keys():
-            text = data_json['edited_message']['text']
+            if 'text' in data_json['edited_message'].keys():
+                text = data_json['edited_message']['text']
+            else:
+                text = data_json['edited_message']['caption']
             msg_links = capture_urls(text)
 
             entities = data_json["edited_message"].get("entities", None)
             if entities is not None:
                 entities_links = self.__capture_links_from_entities(entities)
         if 'message' in data_json.keys():
-            text = data_json['message']['text']
+            if 'text' in data_json['message'].keys():
+                text = data_json['message']['text']
+            else:
+                text = data_json['message']['caption']
+
             msg_links = capture_urls(text)
             entities = data_json["message"].get("entities", None)
             if entities is not None:

@@ -16,9 +16,42 @@ with open('/home/rafa/PycharmProjects/xbot-main/bot_handler/test_inputs/standard
 with open('/home/rafa/PycharmProjects/xbot-main/bot_handler/test_inputs/fw_no_amazon_message.json') as json_file:
     fw_no_amazon_message = json.load(json_file)
 
+with open('/home/rafa/PycharmProjects/xbot-main/bot_handler/test_inputs/message_caption.json') as json_file:
+    message_caption = json.load(json_file)
+
 it = InputTransformer()
 
-data = it.capture_input_data(fw_no_amazon_message)
+data = it.capture_input_data(message_caption)
+
+
+def test_message_caption_input():
+    message = message_caption
+    assert isinstance(message, dict)
+    assert isinstance(message['message'], dict)
+    assert isinstance(message['message']['chat']['id'], int)
+    # Note: message['message']['text'] does not exist !!
+    assert isinstance(message['message']['caption'], str)
+    assert "message" in message.keys()
+
+    # capture links test
+    amazon_link = 'https://amzn.to/2VhaBsB'
+    assert isinstance(it.capture_links(message), list)
+    assert it.capture_links(message) == [amazon_link]
+
+    # capture message test
+    assert isinstance(it.capture_message(message), str)
+    assert "Báscula Baño Vigorun Báscula Grasa Corporal" in it.capture_message(message)
+
+    # capture chat id
+    assert isinstance(it.capture_chat(message), dict)
+    assert isinstance(it.capture_chat(message)['id'], int)
+    assert it.capture_chat(message)['id'] == 9623929
+
+    # global test
+    data = it.capture_input_data(message)
+    assert "https://amzn.to/2VhaBsB" in data["message"]
+    assert [amazon_link] == data["links"]
+    assert 9623929 == data['chat']['id']
 
 
 def test_standard_message_input():
