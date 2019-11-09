@@ -22,6 +22,14 @@ class Proxy(metaclass=Singleton):
             try:
                 data = r.json()
                 print(data)
+                try:
+                    if data['is_captcha']:
+                        print("<---------")
+                        print("Scraper return is_captcha flag True")
+                        print("--------->")
+                        return {'data': r.json(), 'status': r.status_code}
+                except KeyError:
+                    print('Warning: Missing "is_captcha" attribute in the scraper return')
             except:
                 print(f"Scraper {scraper} cannot scrape {url}")
                 return {'data': {}, 'status': 501}

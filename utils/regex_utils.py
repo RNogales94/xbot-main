@@ -22,6 +22,7 @@ def is_image_url(url):
     print(pattern.match(url) is not None)
     return pattern.match(url) is not None
 
+
 def is_change_tag_message(message):
     pattern = re.compile(r"^/tag(\s[\w\-]+)*$")
     print(pattern.match(message) is not None)
