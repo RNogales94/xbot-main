@@ -28,15 +28,15 @@ def index():
 
 @xbot_webservice.route('/api/scrape', methods=['POST'])
 def redirect_scrape():
-    if request.headers.get('Content-Type') != 'application/fw.json':
-        error_message = json.dumps({'Error': 'Content-Type must be application/fw.json'})
-        return Response(error_message, status=400, mimetype='application/fw.json')
+    if request.headers.get('Content-Type') != 'application/json':
+        error_message = json.dumps({'Error': 'Content-Type must be application/json'})
+        return Response(error_message, status=400, mimetype='application/json')
     url = request.json.get('url')
     user = request.json.get('user') or None
 
     if url is None:
-        error_message = json.dumps({'Error': 'Must send a url in the fw.json body'})
-        return Response(error_message, status=400, mimetype='application/fw.json')
+        error_message = json.dumps({'Error': 'Must send a url in the json body'})
+        return Response(error_message, status=400, mimetype='application/json')
 
     if user is None:
         print("Warning: Request come from user None")
@@ -49,13 +49,13 @@ def redirect_scrape():
         response = json.dumps({'Error': 'No valid Amazon URL / AliExpress URL'})
         status = 400
 
-    return Response(response, status=status, mimetype='application/fw.json')
+    return Response(response, status=status, mimetype='application/json')
 
 
 @xbot_webservice.route('/api/newoffer', methods=['POST'])
 def new_offer():
-    if request.content_type != 'application/fw.json':
-        return Response(json.dumps({'Error': 'Content-Type must be application/fw.json'}), status=400, mimetype='application/fw.json')
+    if request.content_type != 'application/json':
+        return Response(json.dumps({'Error': 'Content-Type must be application/json'}), status=400, mimetype='application/json')
 
     payload = request.json
     message = payload.get('message')
@@ -63,7 +63,7 @@ def new_offer():
 
     if message is None:
         error_message = '"message" field is mandatory, try with {"message": "hello world", "origin": "me"}'
-        return Response(json.dumps({'Error': error_message}), status=400, mimetype='application/fw.json')
+        return Response(json.dumps({'Error': error_message}), status=400, mimetype='application/json')
 
     urls = capture_urls(message)
     offers = []
@@ -85,7 +85,7 @@ def new_offer():
         if product.is_completed:
             xbotdb.insert_product(product, telegram_name='XBOT_API')
     print({'Message': f'Document inserted in mongo ({len(offers)})'})
-    return Response(json.dumps(offers), status=200, mimetype='application/fw.json')
+    return Response(json.dumps(offers), status=200, mimetype='application/json')
 
 
 @xbot_webservice.route('/api/todayamazon')
@@ -121,7 +121,7 @@ def main():
 
         message_url = BOT_URL + 'sendMessage'
         requests.post(message_url, json=json_data)
-        return Response(json.dumps(json_data), status=200, mimetype='application/fw.json')
+        return Response(json.dumps(json_data), status=200, mimetype='application/json')
     except Exception as e:
         print(f"<<--------------- Exception happens ---------\n{e}\n-----------End--------->>")
         json_data = {
@@ -130,7 +130,7 @@ def main():
             'parse_mode': 'HTML'
         }
         requests.post(message_url, json=json_data)  # This can avoid memory leaks
-        return Response(json.dumps({"Error": e}), status=500, mimetype='application/fw.json')
+        return Response(json.dumps({"Error": e}), status=500, mimetype='application/json')
 
 
 if __name__ == '__main__':
