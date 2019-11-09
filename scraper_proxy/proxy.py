@@ -9,38 +9,44 @@ class Proxy(metaclass=Singleton):
     def __init__(self):
         self.scrape_broker = ScraperBroker()
 
-    def __scrape(self, url):
+    def __get_scraper_response(self, url):
         scraper = self.scrape_broker.get_scraper(user=None)
-
         print(f'Using {scraper}')
 
-        if url == '':
-            return {'data': {'Error': 'Parameter url not found'}, 'status': 400}
+        r = requests.post(f'{scraper}{SCRAPER_ENDPOINT}', json={'url': url})
+        data, status = r.json(), r.status_code
+
+        print(f"[Proxy] Scraper {scraper} return status {status}...")
+        print(f"[Proxy] scraper {scraper} returned:\n{data}")
+
+        return data, status
+
+    @staticmethod
+    def should_restart_scraper(data, status):
+        if status == 503:
+            print("[Proxy] Restarting due to CAPTCHA...")
+            return True
+        elif 'Error' in data.keys() and status < 400:
+            print("[Proxy] Restarting due to ERROR with status < 200...")
+            return True
+        # elif data.get('short_description') is None:
+        #     print("[Proxy] Restarting due to short_description is None...")
+        #     return True
         else:
-            r = requests.post(f'{scraper}{SCRAPER_ENDPOINT}', json={'url': url})
-            print(r.status_code)
-            try:
-                data = r.json()
-                print(data)
-                try:
-                    if data['is_captcha']:
-                        print("<---------")
-                        print("Scraper return is_captcha flag True")
-                        print("--------->")
-                        return {'data': r.json(), 'status': r.status_code}
-                except KeyError:
-                    print('Warning: Missing "is_captcha" attribute in the scraper return')
-            except:
-                print(f"Scraper {scraper} cannot scrape {url}")
-                return {'data': {}, 'status': 501}
+            print('[Proxy] No restart scraper')
+            return False
 
-            if r.json().get('short_description') is None:
-                self.scrape_broker.update_current_scraper(user=None)
-                r = requests.post(f'{scraper}{SCRAPER_ENDPOINT}', json={'url': url})
+    def scrape_single_url(self, url):
 
-            return {'data': r.json(), 'status': r.status_code}
+        data, status = self.__get_scraper_response(url=url)
 
-    def scrape(self, url, user_type=None):
+        if self.should_restart_scraper(data, status):  # Restart this broker if it's broken or banned
+            self.scrape_broker.update_current_scraper()
+            data, status = self.__get_scraper_response(url=url)
+
+        return {'data': data, 'status': status}
+
+    def scrape(self, url):
         """
         Scrape urls and get information for a url
 
@@ -50,8 +56,8 @@ class Proxy(metaclass=Singleton):
         """
         if isinstance(url, list):
             urls = url
-            result = [self.__scrape(url) for url in urls]
+            result = [self.scrape_single_url(url) for url in urls]
         if isinstance(url, str):
-            result = [self.__scrape(url)]
+            result = [self.scrape_single_url(url)]
 
         return result
