@@ -94,7 +94,7 @@ class Bot(metaclass=Singleton):
         #         f'/tag <new_tag>  --> Cambia tu tag de amazon\n'
         #         f'/cupon <CODE> <PRICE> <LINK> --> Crea un mensaje con cupon (importante no dejar espacios entre el precio y el simbolo del €)'
         #         f'/help --> Ver este mensaje de ayuda']
-        return [f'/tag <new_tag> --  Cambia tu tag de amazon']
+        return [f'Para que los links lleven tu tag de amazon necesito saber cual es, usa /tag seguido de tu tag\nPor ejemplo si tu tag es hola-21 escribe\n/tag hola-21']
 
     @staticmethod
     def __tag(data):
