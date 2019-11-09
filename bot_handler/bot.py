@@ -160,6 +160,10 @@ class Bot(metaclass=Singleton):
         print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
         return text_messages
 
-
-
+    @staticmethod
+    def build_message_from_json(json, user=None):
+        product = ProductFactory.build_product_from_json(json)
+        message = MessageCustomizer.build_message(product, user)
+        text_message = str(message)
+        return text_message
 

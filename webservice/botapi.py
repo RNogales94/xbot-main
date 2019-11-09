@@ -88,9 +88,30 @@ def new_offer():
     return Response(json.dumps(offers), status=200, mimetype='application/json')
 
 
-@xbot_webservice.route('/api/todayamazon')
+@xbot_webservice.route('/api/todayamazon', methods=['POST'])
 def get_todays_offers_from_amazon():
-    pass
+
+    if request.content_type != 'application/json':
+        return Response(json.dumps({'Error': 'Content-Type must be application/json'}), status=400, mimetype='application/json')
+    payload = request.json
+    # for chat_id, user in [(id, xbotdb.get_user_by_chat_id(id)) for id in [213337828, 9623929, 24843237]]:
+    for chat_id, user in [(id, xbotdb.get_user_by_chat_id(id)) for id in [213337828, 24843237]]:
+    # for chat_id, user in [(id, xbotdb.get_user_by_chat_id(id)) for id in [213337828]]:
+        for item in payload:
+            data = item['data']
+            message = bot.build_message_from_json(data, user)
+
+            # Send message
+            json_data = {
+                "chat_id": chat_id,
+                "text": message,
+                'parse_mode': 'HTML'
+            }
+            message_url = BOT_URL + 'sendMessage'
+            requests.post(message_url, json=json_data)
+
+
+    return Response(json.dumps({'Success': 'True'}), status=200, mimetype='application/json')
 
 
 @xbot_webservice.route('/bot', methods=['POST'])
