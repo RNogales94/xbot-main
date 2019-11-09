@@ -93,22 +93,24 @@ def get_todays_offers_from_amazon():
 
     if request.content_type != 'application/json':
         return Response(json.dumps({'Error': 'Content-Type must be application/json'}), status=400, mimetype='application/json')
-    payload = request.json
+    json_data = request.json
+    print(json_data)
     # for chat_id, user in [(id, xbotdb.get_user_by_chat_id(id)) for id in [213337828, 9623929, 24843237]]:
     for chat_id, user in [(id, xbotdb.get_user_by_chat_id(id)) for id in [213337828, 24843237]]:
     # for chat_id, user in [(id, xbotdb.get_user_by_chat_id(id)) for id in [213337828]]:
-        for item in payload:
+        for item in json_data:
             data = item['data']
             message = bot.build_message_from_json(data, user)
+            if message != 'None':
+                # Send message
+                json_data = {
+                    "chat_id": chat_id,
+                    "text": message,
+                    'parse_mode': 'HTML'
+                }
+                message_url = BOT_URL + 'sendMessage'
+                requests.post(message_url, json=json_data)
 
-            # Send message
-            json_data = {
-                "chat_id": chat_id,
-                "text": message,
-                'parse_mode': 'HTML'
-            }
-            message_url = BOT_URL + 'sendMessage'
-            requests.post(message_url, json=json_data)
 
 
     return Response(json.dumps({'Success': 'True'}), status=200, mimetype='application/json')
@@ -156,4 +158,9 @@ def main():
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
-    xbot_webservice.run(host='0.0.0.0', port=port, debug=True)
+    env = os.environ.get('ENV', 'DEV')
+    if env == 'PRD':
+        debug = False
+    else:
+        debug = True
+    xbot_webservice.run(host='0.0.0.0', port=port, debug=debug)
