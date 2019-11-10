@@ -18,21 +18,13 @@ message = "https://www.amazon.es/Russell-Hobbs-20562-56-SteamGlide-Professional/
 #     assert isinstance(result[0], dict)
 #
 
-bad_url = 'http://www.google.com'
-responses = Proxy().scrape_single_url(bad_url)
+# bad_url = 'http://www.google.com'
+# responses = Proxy().scrape_single_url(bad_url)
 
-url = 'https://www.amazon.es/Russell-Hobbs-20562-56-SteamGlide-Professional/dp/B00F9SUKE4/'
-responses = Proxy().scrape(url)
+# url = 'https://www.amazon.es/Russell-Hobbs-20562-56-SteamGlide-Professional/dp/B00F9SUKE4/'
+# responses = Proxy().scrape(url)
 
-
-def scrape_single_url():
-    pass
-
-
-
-
-
-def test_scrape_proxy():
+def test_scrape_proxy_no_urls():
     url = []
     responses = Proxy().scrape(url)
     assert isinstance(responses, list)

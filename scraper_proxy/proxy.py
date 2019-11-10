@@ -1,5 +1,5 @@
 import requests
-
+import random
 from utils.singleton import Singleton
 from scraper_proxy.scraper_broker import ScraperBroker
 from scraper_proxy.config import SCRAPER_ENDPOINT
@@ -29,10 +29,9 @@ class Proxy(metaclass=Singleton):
         elif 'Error' in data.keys() and status < 400:
             print("[Proxy] Restarting due to ERROR with status < 200...")
             return True
-        # elif data.get('short_description') is None:
-        #     print("[Proxy] Restarting due to short_description is None...")
-        #     return True
         else:
+            if random.random() < 0.1:
+                return True
             print('[Proxy] No restart scraper')
             return False
 
