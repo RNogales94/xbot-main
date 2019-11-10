@@ -96,20 +96,21 @@ def get_todays_offers_from_amazon():
     json_data = request.json
     print(json_data)
     # for chat_id, user in [(id, xbotdb.get_user_by_chat_id(id)) for id in [213337828, 9623929, 24843237]]:
-    for chat_id, user in [(id, xbotdb.get_user_by_chat_id(id)) for id in [213337828, 24843237]]:
-    # for chat_id, user in [(id, xbotdb.get_user_by_chat_id(id)) for id in [213337828]]:
+    #for chat_id, user in [(id, xbotdb.get_user_by_chat_id(id)) for id in [213337828, 24843237]]:
+    for chat_id, user in [(id, xbotdb.get_user_by_chat_id(id)) for id in [213337828]]:
         for item in json_data:
             data = item['data']
-            message = bot.build_message_from_json(data, user)
-            if message != 'None':
-                # Send message
-                json_data = {
-                    "chat_id": chat_id,
-                    "text": message,
-                    'parse_mode': 'HTML'
-                }
-                message_url = BOT_URL + 'sendMessage'
-                requests.post(message_url, json=json_data)
+            if 'Error' not in data.keys():
+                message = bot.build_message_from_json(data, user)
+                if message != 'None':
+                    # Send message
+                    json_data = {
+                        "chat_id": chat_id,
+                        "text": message,
+                        'parse_mode': 'HTML'
+                    }
+                    message_url = BOT_URL + 'sendMessage'
+                    requests.post(message_url, json=json_data)
 
 
 
