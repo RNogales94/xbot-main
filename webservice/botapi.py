@@ -8,6 +8,7 @@ from bot_handler.telegram_config import BOT_URL
 from bot_handler.bot import Bot
 import requests
 from utils.amazon.tools import AmazonTools
+from datetime import datetime
 
 from scraper_proxy.proxy import Proxy
 import os
@@ -19,6 +20,10 @@ proxy = Proxy()
 xbotdb = Xbotdb()
 
 bot = Bot()
+
+
+# [213337828, 9623929, 24843237]]:
+#  [213337828, 24843237]]:
 
 
 @xbot_webservice.route("/")
@@ -93,14 +98,15 @@ def get_todays_offers_from_amazon():
 
     if request.content_type != 'application/json':
         return Response(json.dumps({'Error': 'Content-Type must be application/json'}), status=400, mimetype='application/json')
-    json_data = request.json
-    print(json_data)
-    # for chat_id, user in [(id, xbotdb.get_user_by_chat_id(id)) for id in [213337828, 9623929, 24843237]]:
-    #for chat_id, user in [(id, xbotdb.get_user_by_chat_id(id)) for id in [213337828, 24843237]]:
-    for chat_id, user in [(id, xbotdb.get_user_by_chat_id(id)) for id in [213337828]]:
-        for item in json_data:
-            data = item['data']
-            if 'Error' not in data.keys():
+    request_data = request.json
+    print(request_data)
+
+    good_products_counter = 0
+    for item in request_data:
+        data = item['data']
+        if 'Error' not in data.keys() and data['short_description'] is not None:
+            good_products_counter = good_products_counter + 1
+            for chat_id, user in [(id, xbotdb.get_user_by_chat_id(id)) for id in [213337828]]:
                 message = bot.build_message_from_json(data, user)
                 if message != 'None':
                     # Send message
@@ -112,7 +118,15 @@ def get_todays_offers_from_amazon():
                     message_url = BOT_URL + 'sendMessage'
                     requests.post(message_url, json=json_data)
 
-
+    now = datetime.now().strftime("[%A] %m/%d/%Y, %H:%M:%S")
+    counters = f"{good_products_counter}/{len(request_data)}"
+    json_data = {
+        "chat_id": 213337828,
+        "text": f'Fin de los productos de hoy {now}\nTotal de hoy {counters} productos',
+        'parse_mode': 'HTML'
+    }
+    message_url = BOT_URL + 'sendMessage'
+    requests.post(message_url, json=json_data)
 
     return Response(json.dumps({'Success': 'True'}), status=200, mimetype='application/json')
 
