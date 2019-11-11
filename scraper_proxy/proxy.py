@@ -14,7 +14,11 @@ class Proxy(metaclass=Singleton):
         print(f'Using {scraper}')
 
         r = requests.post(f'{scraper}{SCRAPER_ENDPOINT}', json={'url': url})
-        data, status = r.json(), r.status_code
+        status = r.status_code
+        if status == 503:
+            data = {'Error': 'Amazon CAPTCHA'}
+        else:
+            data = r.json()
 
         print(f"[Proxy] Scraper {scraper} return status {status}...")
         print(f"[Proxy] scraper {scraper} returned:\n{data}")
