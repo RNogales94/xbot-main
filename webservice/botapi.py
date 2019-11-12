@@ -72,8 +72,9 @@ def main():
 
     print(f"###############################\n{json.dumps(data)}\n#############################")  # Comment to hide what Telegram is sending you
 
-    messages, chat_id = bot.reply(data)
     try:
+        messages, chat_id = bot.reply(data)
+
         # Avoid flood
         if isinstance(messages, str):
             message = messages
@@ -104,7 +105,7 @@ def main():
         print(f"<<--------------- Exception happens ---------\n{e}\n-----------End--------->>")
         json_data = {
             "chat_id": chat_id,
-            "text": "Ha habido un error inesperado con ese producto",
+            "text": "Ha habido un error inesperado",
             'parse_mode': 'HTML'
         }
         requests.post(message_url, json=json_data)  # This can avoid memory leaks
