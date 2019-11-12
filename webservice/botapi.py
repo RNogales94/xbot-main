@@ -141,7 +141,12 @@ def main():
     try:
         # Avoid flood
         if isinstance(messages, str):
-            messages = [messages]
+            message = messages
+            json_data = {
+                "chat_id": chat_id,
+                "text": message,
+                'parse_mode': 'HTML'
+            }
         elif messages == []:
             message = "No he podido sacar datos de ese producto"
             json_data = {

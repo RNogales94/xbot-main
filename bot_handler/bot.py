@@ -38,6 +38,30 @@ class Bot(metaclass=Singleton):
             return 'build_product_message'
         return 'no_intent'
 
+    def __reply_in_private_chat(self, data_json):
+        data = it.capture_input_data(data_json)
+        chat_id = data['chat']['id']
+
+        intent = self.__get_intent(data)
+        message = self.__reply_to(intent, data)
+
+        return message, chat_id
+
+    @staticmethod
+    def __is_private_chat(data_json):
+        return 'chat' in data_json.keys() and 'channel_post' not in data_json.keys()
+
+    @staticmethod
+    def __is_channel_chat(data_json):
+        return 'channel_post' in data_json.keys()
+
+    def __reply_in_channel_chat(self, data_json):
+        chat_id = data_json['channel_post']['chat']['id']
+
+        message = 'No reply in channels'
+
+        return message, chat_id
+
     def reply(self, data_json):
         """
         reply to the indicate user an appropiate response based on the incoming message.
@@ -46,14 +70,16 @@ class Bot(metaclass=Singleton):
         :param data_json: request body from telegram
         :return: message, chat
         """
+        if self.__is_private_chat(data_json):
+            message, chat_id = self.__reply_in_private_chat(data_json)
+            return message, chat_id
 
-        data = it.capture_input_data(data_json)
-        chat_id = data['chat']['id']
+        elif self.__is_channel_chat(data_json):
+            message, chat_id = self.__reply_in_channel_chat(data_json)
+            return message, chat_id
 
-        intent = self.__get_intent(data)
-        message = self.__reply_to(intent, data)
 
-        return message, chat_id
+
 
     def __reply_to(self, intent, data):
 

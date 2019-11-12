@@ -37,13 +37,18 @@ class InputTransformer(metaclass=Singleton):
             elif 'caption' in data_json['message'].keys():
                 text = data_json['message']['caption']
             else:
-                print('[Xbot Main] WARNING, no text neither caption in the income message')
+                print('[Xbot Main] WARNING, no text neither caption in the income message (capture links)')
                 text = ''
 
             msg_links = capture_urls(text)
             entities = data_json["message"].get("entities", None)
             if entities is not None:
                 entities_links = self.__capture_links_from_entities(entities)
+
+        if 'channel_post' in data_json.keys():
+            text = ''  # No capture links in
+            msg_links = []
+            entities_links = []
 
         links = list(set(msg_links + entities_links))
         links = self.__remove_image_links(links)
@@ -63,11 +68,16 @@ class InputTransformer(metaclass=Singleton):
             try:
                 message = data_json['message']['text']
             except KeyError:
-                try:
-                    message = data_json['message']['caption']
-                except KeyError:
-                    print('[Xbot Main] WARNING no text neither caption in the income language (capture message)')
-                    message = ''
+                message = data_json['message']['caption']
+
+        if 'channel_post' in data_json.keys():
+            try:
+                message = data_json['channel_post']['text']
+            except KeyError:
+                message = data_json['channel_post']['caption']
+
+
+
 
         return message
 
@@ -79,6 +89,9 @@ class InputTransformer(metaclass=Singleton):
 
         if 'message' in data_json.keys():
             chat = data_json['message']['chat']
+
+        if 'channel_post' in data_json.keys():
+            chat = data_json['channel_post']['chat']
 
         return chat
 
