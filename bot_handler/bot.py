@@ -49,7 +49,15 @@ class Bot(metaclass=Singleton):
 
     @staticmethod
     def __is_private_chat(data_json):
-        return 'message' in data_json.keys() or 'edited_message' in data_json.keys()
+        is_channel = 'channel_post' in data_json.keys()
+        is_message = 'message' in data_json.keys()
+        is_edited_message = 'edited_message' in data_json.keys()
+        if is_channel:
+            return False
+        elif is_message:
+            return data_json['message']['chat']['type'] == 'private'
+        elif is_edited_message:
+            return data_json['edited_message']['chat']['type'] == 'private'
 
     @staticmethod
     def __is_channel_chat(data_json):
@@ -57,7 +65,7 @@ class Bot(metaclass=Singleton):
 
     @staticmethod
     def __reply_in_channel_chat(data_json):
-        chat_id = data_json['channel_post']['chat']['id']
+        chat_id = it.capture_chat(data_json)['id']
         message = 'No reply in channels'
         return message, chat_id
 
@@ -72,12 +80,9 @@ class Bot(metaclass=Singleton):
         if self.__is_private_chat(data_json):
             message, chat_id = self.__reply_in_private_chat(data_json)
             return message, chat_id
-
-        elif self.__is_channel_chat(data_json):
+        else:
             message, chat_id = self.__reply_in_channel_chat(data_json)
             return message, chat_id
-
-
 
 
     def __reply_to(self, intent, data):
