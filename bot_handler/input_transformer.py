@@ -90,6 +90,9 @@ class InputTransformer(metaclass=Singleton):
         if 'channel_post' in data_json.keys():
             chat = data_json['channel_post']['chat']
 
+        if 'edited_channel_post' in data_json.keys():
+            chat = data_json['edited_channel_post']['chat']
+
         return chat
 
     def capture_input_data(self, data_json):

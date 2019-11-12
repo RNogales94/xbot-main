@@ -49,7 +49,7 @@ class Bot(metaclass=Singleton):
 
     @staticmethod
     def __is_private_chat(data_json):
-        is_channel = 'channel_post' in data_json.keys()
+        is_channel = 'channel_post' in data_json.keys() or 'edited_channel_post' in data_json.keys()
         is_message = 'message' in data_json.keys()
         is_edited_message = 'edited_message' in data_json.keys()
         if is_channel:
