@@ -98,8 +98,8 @@ class Xbotdb(metaclass=Singleton):
             amazon_tag = None
         return amazon_tag
 
-    def get_channels_associates(self, telegram_name):
-        return self.users.find_one({'telegramName': telegram_name})['telegramChannels']
+    def get_channels_associates(self, chat_id):
+        return self.get_user_by_chat_id(chat_id).telegram_channels
 
 
 if __name__ == '__main__':
