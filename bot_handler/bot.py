@@ -49,17 +49,16 @@ class Bot(metaclass=Singleton):
 
     @staticmethod
     def __is_private_chat(data_json):
-        return 'chat' in data_json.keys() and 'channel_post' not in data_json.keys()
+        return 'message' in data_json.keys() or 'edited_message' in data_json.keys()
 
     @staticmethod
     def __is_channel_chat(data_json):
         return 'channel_post' in data_json.keys()
 
-    def __reply_in_channel_chat(self, data_json):
+    @staticmethod
+    def __reply_in_channel_chat(data_json):
         chat_id = data_json['channel_post']['chat']['id']
-
         message = 'No reply in channels'
-
         return message, chat_id
 
     def reply(self, data_json):

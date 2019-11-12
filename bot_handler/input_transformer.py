@@ -76,9 +76,6 @@ class InputTransformer(metaclass=Singleton):
             except KeyError:
                 message = data_json['channel_post']['caption']
 
-
-
-
         return message
 
     @staticmethod
