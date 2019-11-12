@@ -23,13 +23,13 @@ class Xbotdb(metaclass=Singleton):
     def count_product(self):
         return self.products.count()
 
-    def insert_product(self, product, use_timestamp=True, telegram_name=None):
+    def insert_product(self, product, use_timestamp=True, origin=None):
         p = product.to_dict()
 
         if use_timestamp:
             p['timestamp'] = datetime.now().timestamp()
-        if telegram_name is not None:
-            p['origin'] = telegram_name
+        if origin is not None:
+            p['origin'] = origin
 
         self.products.insert_one(p)
 

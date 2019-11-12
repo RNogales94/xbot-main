@@ -34,8 +34,11 @@ class InputTransformer(metaclass=Singleton):
         if 'message' in data_json.keys():
             if 'text' in data_json['message'].keys():
                 text = data_json['message']['text']
-            else:
+            elif 'caption' in data_json['message'].keys():
                 text = data_json['message']['caption']
+            else:
+                print('[Xbot Main] WARNING, no text neither caption in the income message')
+                text = ''
 
             msg_links = capture_urls(text)
             entities = data_json["message"].get("entities", None)
@@ -60,7 +63,11 @@ class InputTransformer(metaclass=Singleton):
             try:
                 message = data_json['message']['text']
             except KeyError:
-                message = data_json['message']['caption']
+                try:
+                    message = data_json['message']['caption']
+                except KeyError:
+                    print('[Xbot Main] WARNING no text neither caption in the income language (capture message)')
+                    message = ''
 
         return message
 

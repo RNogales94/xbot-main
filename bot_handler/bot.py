@@ -130,7 +130,6 @@ class Bot(metaclass=Singleton):
     #     return text_messages
 
 
-
     @staticmethod
     def __build_product_message(data):
         print("<<<<<<<<<<<<<<<<<<<<<<< Format url trace ")
