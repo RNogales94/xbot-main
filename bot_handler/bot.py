@@ -84,7 +84,6 @@ class Bot(metaclass=Singleton):
             message, chat_id = self.__reply_in_channel_chat(data_json)
             return message, chat_id
 
-
     def __reply_to(self, intent, data):
 
         message_handler = self.__handle_intent[intent]
@@ -158,7 +157,6 @@ class Bot(metaclass=Singleton):
     #     messages = [MessageCustomizer.build_message(product, user, cupon) for product in products]
     #     text_messages = [str(message) for message in messages]
     #     return text_messages
-
 
     @staticmethod
     def __build_product_message(data):
