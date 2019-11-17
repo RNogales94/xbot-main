@@ -163,6 +163,10 @@ class LineFormater(metaclass=Singleton):
             'default': f'',
             # 'Vincent_Vegaa': f'<b>&#128064;Visto en: </b><a href="https://t.me/AmznSports">AmznSports</a>\n\n',
             'Katka95': f'<b>&#128064;Visto en: </b><a href="https://t.me/TusChollosBelleza">TusChollosBelleza</a>\n\n',
+            'Malu320': f'<b></b><a href="https://www.amazon.es/dp/B004FRX0MY/tag=trono06-21">Amazon Music</a> Gratis!\n'
+                       f'<b></b><a href="https://www.amazon.es/dp/B00N28818A/tag=trono06-21">Amazon Prime</a> Gratis!\n',
+            'RNogales': f'<b></b><a href="https://www.amazon.es/dp/B004FRX0MY/tag=trono06-21">Amazon Music</a> Gratis!\n'
+                       f'<b></b><a href="https://www.amazon.es/dp/B00N28818A/tag=trono06-21">Amazon Prime</a> Gratis!\n',
 
         }
         line = watched_in_line
