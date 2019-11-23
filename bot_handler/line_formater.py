@@ -17,7 +17,7 @@ class LineFormater(metaclass=Singleton):
         'right_arrow': '&#10145;',
         'microphone': '&#127897;',
         'trolley': '&#x1F6D2;',
-        'man-genie': '&#129502;&#9794;',
+        'man-genie': '&#129502;',
         'headphones': '&#127911;',
         'moneybag': '&#128176;',
 
