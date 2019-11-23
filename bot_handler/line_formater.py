@@ -17,10 +17,15 @@ class LineFormater(metaclass=Singleton):
         'right_arrow': '&#10145;',
         'microphone': '&#127897;',
         'trolley': '&#x1F6D2;',
+        'man-genie': '&#129502;&#9794;',
+        'headphones': '&#127911;',
+        'moneybag': '&#128176;',
+
         # Negative
         '': '',
         'red_circle': '&#11093;',
         'red_cross': '&#10060;',
+        'no-entry': '&#9940;',
         'fear': '&#128561;',
         'globe': '&#127760;',
         # Special
@@ -78,7 +83,7 @@ class LineFormater(metaclass=Singleton):
         size_line = {
             'default': f'<b> Talla {size} </b>\n\n' if size else '',
             'TheCifu': f'<b> CHOLLAZO, en diferentes tallas !! </b>\n\n' if size else '',
-            'Vincent_Vegaa': '',
+            # 'Vincent_Vegaa': '',
         }
         line = size_line
         return line.get(style, line['default'])
@@ -87,6 +92,8 @@ class LineFormater(metaclass=Singleton):
     def get_temporal_line(cls, end_date, style='default'):
         temporal_line = {
             'default': f'<b> {cls.emoji["sand_clock"]} Oferta Temporal!! {end_date}</b>\n\n' if end_date else '',
+            'Vincent_Vegaa': f'<b> {cls.emoji["sand_clock"]} Oferta Flash Finilza en {end_date}</b>\n\n' if end_date else '',
+            'Malu320': f'<b> {cls.emoji["sand_clock"]} Oferta Flash Finilza en {end_date}</b>\n\n' if end_date else '',
         }
 
         line = temporal_line
@@ -98,6 +105,8 @@ class LineFormater(metaclass=Singleton):
         old_price_line = {
                 'default': f'<b>{cls.emoji["red_cross"]} {old_price}</b>\n' if old_price else '',
                 'gavaste': '',
+                'Vincent_Vegaa': f'<b>{cls.emoji["no-entry"]} PVP: {old_price}</b>\n' if old_price else '',
+                'Malu320': f'<b>{cls.emoji["no-entry"]} PVP: {old_price}</b>\n' if old_price else '',
             }
         line = old_price_line
         return line.get(style, line['default'])
@@ -106,7 +115,8 @@ class LineFormater(metaclass=Singleton):
     def get_price_line(cls, price, style='default'):
         price_line = {
             'default': f'<b>{cls.emoji["check"]}{price}</b>\n',
-            'Vincent_Vegaa': f'<b>{price} {cls.emoji["check"]} </b>\n',
+            'Vincent_Vegaa': f'<b>{cls.emoji["check"]} PRECIO OFERTA: {price} </b>\n',
+            'Malu320': f'<b>{cls.emoji["check"]} PRECIO OFERTA: {price} </b>\n',
         }
         line = price_line
         return line.get(style, line['default'])
@@ -135,14 +145,12 @@ class LineFormater(metaclass=Singleton):
         line = shop_line
         return line.get(style, line['default'])
 
-
     @classmethod
     def __get_shop_name(cls, url):
         if AmazonTools.is_amazon(url):
             return 'Amazon'
         else:
             return ''
-
 
     @classmethod
     def get_link_line(cls, url, style='default'):
@@ -151,7 +159,8 @@ class LineFormater(metaclass=Singleton):
                        f'{cls.emoji["right_arrow"]}<a href="{url}">Ver en {cls.__get_shop_name(url)} </a>\n',
 
             'TheCifu': f'\n{cls.emoji["globe"]}<a href="{url}">Ver en {cls.__get_shop_name(url)} </a>\n',
-            'Vincent_Vegaa': f'<b>&#x1F6D2;Comprar </b><a href="{url}">aquí</a>\n\n',
+            'Vincent_Vegaa': f'<b>{cls.emoji["trolley"]} Compra: </b><a href="{url}">Aquí</a>\n\n',
+            'Malu320': f'<b>{cls.emoji["trolley"]} Compra: </b><a href="{url}">Aquí</a>\n\n',
         }
 
         line = link_line
@@ -161,12 +170,19 @@ class LineFormater(metaclass=Singleton):
     def watched_in(cls, style='default'):
         watched_in_line = {
             'default': f'',
-            # 'Vincent_Vegaa': f'<b>&#128064;Visto en: </b><a href="https://t.me/AmznSports">AmznSports</a>\n\n',
             'Katka95': f'<b>&#128064;Visto en: </b><a href="https://t.me/TusChollosBelleza">TusChollosBelleza</a>\n\n',
-            'Malu320': f'<b></b><a href="https://www.amazon.es/dp/B004FRX0MY/tag=trono06-21">Amazon Music</a> Gratis!\n'
-                       f'<b></b><a href="https://www.amazon.es/dp/B00N28818A/tag=trono06-21">Amazon Prime</a> Gratis!\n',
-            'RNogales': f'<b></b><a href="https://www.amazon.es/dp/B004FRX0MY/tag=trono06-21">Amazon Music</a> Gratis!\n'
-                       f'<b></b><a href="https://www.amazon.es/dp/B00N28818A/tag=trono06-21">Amazon Prime</a> Gratis!\n',
+
+            'Vincent_Vegaa': f'{cls.emoji["man-genie"]} <a href="https://www.amazon.es/gp/aw/gb/?ie=UTF8&ref_=navm_hdr_deals&tag=koko01a-21">Chollos del día</a>\n'
+                       f'{cls.emoji["headphones"]} <a href="https://www.amazon.es/music/unlimited?_encoding=UTF8&ref=as_li_ss_tl&tag=koko01a-21">Amazon Music Unlimited</a>\n'
+                       f'{cls.emoji["moneybag"]} <a href="http://www.amazon.es/prime?tag=koko01a-21">Amazon Prime GRATIS</a>\n',
+
+            'Malu320': f'{cls.emoji["man-genie"]} <a href="https://www.amazon.es/gp/aw/gb/?ie=UTF8&ref_=navm_hdr_deals&tag=trono06-21">Chollos del día</a>\n'
+                       f'{cls.emoji["headphones"]} <a href="https://www.amazon.es/music/unlimited?_encoding=UTF8&ref=as_li_ss_tl&tag=trono06-21">Amazon Music Unlimited</a>\n'
+                       f'{cls.emoji["moneybag"]} <a href="http://www.amazon.es/prime?tag=trono06-21">Amazon Prime GRATIS</a>\n',
+
+            'RNogales': f'{cls.emoji["man-genie"]} <a href="https://www.amazon.es/gp/aw/gb/?ie=UTF8&ref_=navm_hdr_deals&tag=trono06-21">Chollos del día</a>\n'
+                       f'{cls.emoji["headphones"]} <a href="https://www.amazon.es/music/unlimited?_encoding=UTF8&ref=as_li_ss_tl&tag=trono06-21">Amazon Music Unlimited</a>\n'
+                       f'{cls.emoji["moneybag"]} <a href="http://www.amazon.es/prime?tag=trono06-21">Amazon Prime GRATIS</a>\n',
 
         }
         line = watched_in_line
