@@ -11,8 +11,8 @@ free_users = ['Fkillo', 'gavaste', 'DraCarYsssss']
 
 SCRAPERS = [
     'https://xbot-scraper01.herokuapp.com/',
-    'https://xbot-scraper02.herokuapp.com/',
-    'https://xbot-scraper03.herokuapp.com/',
+    #'https://xbot-scraper02.herokuapp.com/',
+    #'https://xbot-scraper03.herokuapp.com/',
 ]
 
 code = ''
