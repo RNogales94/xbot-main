@@ -45,7 +45,7 @@ class Proxy(metaclass=Singleton):
 
         if self.should_restart_scraper(data, status):  # Restart this broker if it's broken or banned
             self.scrape_broker.update_current_scraper()
-            data, status = self.__get_scraper_response(url=url)
+            # data, status = self.__get_scraper_response(url=url)
 
         return {'data': data, 'status': status}
 
