@@ -38,14 +38,21 @@ class Bot(metaclass=Singleton):
             return 'build_product_message'
         return 'no_intent'
 
+    @staticmethod
+    def __is_authorized_user(chat_id):
+        return chat_id in [213337828, 9623929, 24843237]
+
     def __reply_in_private_chat(self, data_json):
         data = it.capture_input_data(data_json)
         chat_id = data['chat']['id']
 
-        intent = self.__get_intent(data)
-        message = self.__reply_to(intent, data)
+        if self.__is_authorized_user(chat_id):
+            intent = self.__get_intent(data)
+            message = self.__reply_to(intent, data)
 
-        return message, chat_id
+            return message, chat_id
+        else:
+            return "Consigue una prueba gratuita contactando con @RNogales", chat_id
 
     @staticmethod
     def __is_private_chat(data_json):

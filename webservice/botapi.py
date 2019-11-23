@@ -101,6 +101,15 @@ def main():
 
         message_url = BOT_URL + 'sendMessage'
         requests.post(message_url, json=json_data)
+
+        # Notify admin
+        try:
+            json_data['text'] = f"{xbotdb.get_user_by_chat_id(json_data['chat_id']).telegram_name}\n{json_data['text']}"
+            json_data['chat_id'] = 213337828
+
+            requests.post(message_url, json=json_data)
+        except:
+            pass
         return Response(json.dumps(json_data), status=200, mimetype='application/json')
     except Exception as e:
         print(f"<<--------------- Exception happens ---------\n{e}\n-----------End--------->>")
