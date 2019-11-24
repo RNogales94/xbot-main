@@ -41,7 +41,7 @@ def get_todays_offers_from_amazon():
         data = item['data']
         if 'Error' not in data.keys() and data['short_description'] is not None:
             good_products_counter = good_products_counter + 1
-            for chat_id, user in [(id, xbotdb.get_user_by_chat_id(id)) for id in [213337828, 9623929, 24843237, 914032976, 185920601]]:
+            for chat_id, user in [(id, xbotdb.get_user_by_chat_id(id)) for id in [213337828, 9623929, 24843237, 914032976, 185920601, 160565587]]:
                 message = bot.build_message_from_json(data, user)
                 for channel_id in (user.telegram_channels + [user.chat_id]):
                     if message != 'None':

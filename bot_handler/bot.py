@@ -40,7 +40,7 @@ class Bot(metaclass=Singleton):
 
     @staticmethod
     def __is_authorized_user(chat_id):
-        return chat_id in [213337828, 9623929, 24843237, 914032976, 185920601]
+        return chat_id in [213337828, 9623929, 24843237, 914032976, 185920601, 160565587]
 
     def __reply_in_private_chat(self, data_json):
         data = it.capture_input_data(data_json)
