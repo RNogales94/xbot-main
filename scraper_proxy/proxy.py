@@ -1,5 +1,4 @@
 import requests
-import random
 from utils.singleton import Singleton
 from scraper_proxy.scraper_broker import ScraperBroker
 from scraper_proxy.config import SCRAPER_ENDPOINT
