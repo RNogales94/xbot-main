@@ -10,8 +10,8 @@ class LineFormater(metaclass=Singleton):
         'check': '&#9989;',
         'blue_diamond': '&#128313;',
         'bangbang': '&#8252;',
-        '': '',
-        '': '',
+        'fire': '&#128293;',
+        'shield': '&#128304;',
         # Neutral
         'sand_clock': '&#x23F3;',
         'right_arrow': '&#10145;',
@@ -26,6 +26,7 @@ class LineFormater(metaclass=Singleton):
         'red_circle': '&#11093;',
         'red_cross': '&#10060;',
         'no-entry': '&#9940;',
+        'forbidden': '&#128683;',
         'fear': '&#128561;',
         'globe': '&#127760;',
         # Special
@@ -41,6 +42,7 @@ class LineFormater(metaclass=Singleton):
     def get_title_line(cls, title, style='default'):
         title_lines = {
             'default': f'<b> {title}</b>\n\n',
+            'adc100': f'<b>{cls.emoji["fire"]} NUEVO CHOLLO #AMAZON \n\n{cls.emoji["fire"]}{title}</b>\n\n',
             'TheCifu': f'<b>{cls.emoji["blue_diamond"]} {title} {cls.emoji["blue_diamond"]}</b> \n\n',
             'Katka95': f'<b>{cls.emoji["blue_diamond"]} {title} {cls.emoji["blue_diamond"]}</b> \n\n',
         }
@@ -107,6 +109,7 @@ class LineFormater(metaclass=Singleton):
                 'gavaste': '',
                 'Vincent_Vegaa': f'<b>{cls.emoji["no-entry"]} PVP: {old_price}</b>\n' if old_price else '',
                 'Malu320': f'<b>{cls.emoji["no-entry"]} PVP: {old_price}</b>\n' if old_price else '',
+                'acd100': f'<b>\t{cls.emoji["forbidden"]} PVP: {old_price}</b>\n' if old_price else '',
             }
         line = old_price_line
         return line.get(style, line['default'])
@@ -117,6 +120,7 @@ class LineFormater(metaclass=Singleton):
             'default': f'<b>{cls.emoji["check"]}{price}</b>\n',
             'Vincent_Vegaa': f'<b>{cls.emoji["check"]} PRECIO OFERTA: {price} </b>\n',
             'Malu320': f'<b>{cls.emoji["check"]} PRECIO OFERTA: {price} </b>\n',
+            'acd100': f'<b>\t{cls.emoji["fire"]} OFERTA ACTUAL: {price} {cls.emoji["fire"]}</b>\n',
         }
         line = price_line
         return line.get(style, line['default'])
@@ -161,6 +165,7 @@ class LineFormater(metaclass=Singleton):
             'TheCifu': f'\n{cls.emoji["globe"]}<a href="{url}">Ver en {cls.__get_shop_name(url)} </a>\n',
             'Vincent_Vegaa': f'<b>{cls.emoji["trolley"]} Compra: </b><a href="{url}">Aquí</a>\n\n',
             'Malu320': f'<b>{cls.emoji["trolley"]} Compra: </b><a href="{url}">Aquí</a>\n\n',
+            'acd100': f'<b>{cls.emoji["shield"]} COMPRAR: </b><a href="{url}">Aquí</a>\n\n',
         }
 
         line = link_line
@@ -183,6 +188,8 @@ class LineFormater(metaclass=Singleton):
             'RNogales': f'{cls.emoji["man-genie"]} <a href="https://www.amazon.es/gp/aw/gb/?ie=UTF8&ref_=navm_hdr_deals&tag=trono06-21">Chollos del día</a>\n'
                        f'{cls.emoji["headphones"]} <a href="https://www.amazon.es/music/unlimited?_encoding=UTF8&ref=as_li_ss_tl&tag=trono06-21">Amazon Music Unlimited</a>\n'
                        f'{cls.emoji["moneybag"]} <a href="http://www.amazon.es/prime?tag=trono06-21">Amazon Prime GRATIS</a>\n',
+
+            'acd100': f'<a href="https://goo.gl/mJ2HiL">Comparte en Whatsapp</a>\n\n',
 
         }
         line = watched_in_line
