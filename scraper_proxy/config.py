@@ -24,8 +24,8 @@ elif os.environ['HEROKU_SCRAPERS_USER'] == 'info@xbot.dev':
 
 SCRAPERS_PRO = [
     f'https://xbot-scraper01{code}.herokuapp.com/',
-    f'https://xbot-scraper02{code}.herokuapp.com/',
-    f'https://xbot-scraper03{code}.herokuapp.com/',
+    # f'https://xbot-scraper02{code}.herokuapp.com/',
+    # f'https://xbot-scraper03{code}.herokuapp.com/',
 ]
 
 SCRAPERS_XBOT = [
