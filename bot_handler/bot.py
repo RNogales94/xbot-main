@@ -1,6 +1,6 @@
 from utils.singleton import Singleton
 from random import choice
-from utils.url_utils import contain_urls, capture_urls
+from utils.url_utils import contain_urls
 from scraper_proxy.proxy import Proxy
 from xbot.utils.product_factory import ProductFactory
 from bot_handler.message_customizer import MessageCustomizer
@@ -40,7 +40,7 @@ class Bot(metaclass=Singleton):
 
     @staticmethod
     def __is_authorized_user(chat_id):
-        return chat_id in [213337828, 9623929, 24843237]
+        return chat_id in [213337828, 9623929, 24843237, 914032976]
 
     def __reply_in_private_chat(self, data_json):
         data = it.capture_input_data(data_json)

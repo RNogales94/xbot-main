@@ -92,8 +92,8 @@ class LineFormater(metaclass=Singleton):
     def get_temporal_line(cls, end_date, style='default'):
         temporal_line = {
             'default': f'<b> {cls.emoji["sand_clock"]} Oferta Temporal!! {end_date}</b>\n\n' if end_date else '',
-            'Vincent_Vegaa': f'<b> {cls.emoji["sand_clock"]} Oferta Flash Finilza en {end_date}</b>\n\n' if end_date else '',
-            'Malu320': f'<b> {cls.emoji["sand_clock"]} Oferta Flash Finilza en {end_date}</b>\n\n' if end_date else '',
+            'Vincent_Vegaa': f'<b> {cls.emoji["sand_clock"]} Oferta Flash {end_date}</b>\n\n' if end_date else '',
+            'Malu320': f'<b> {cls.emoji["sand_clock"]} Oferta Flash {end_date}</b>\n\n' if end_date else '',
         }
 
         line = temporal_line
