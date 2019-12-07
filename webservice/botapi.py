@@ -70,8 +70,6 @@ def get_todays_offers_from_amazon():
 @xbot_webservice.route('/bot', methods=['POST'])
 def main():
     data = request.json
-    return Response(json.dumps({"Error": "force return"}), status=500, mimetype='application/json')
-
 
     print(f"###############################\n{json.dumps(data)}\n#############################")  # Comment to hide what Telegram is sending you
 
@@ -116,7 +114,7 @@ def main():
     except Exception as e:
         print(f"<<--------------- Exception happens ---------\n{e}\n-----------End--------->>")
         json_data = {
-            "chat_id": chat_id,
+            "chat_id": 213337828,
             "text": "Ha habido un error inesperado",
             'parse_mode': 'HTML'
         }
