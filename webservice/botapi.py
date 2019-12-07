@@ -118,6 +118,8 @@ def main():
             "text": "Ha habido un error inesperado",
             'parse_mode': 'HTML'
         }
+
+        message_url = BOT_URL + 'sendMessage'
         requests.post(message_url, json=json_data)  # This can avoid memory leaks
         return Response(json.dumps({"Error": e}), status=500, mimetype='application/json')
 
