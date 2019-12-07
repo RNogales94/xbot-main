@@ -70,6 +70,8 @@ def get_todays_offers_from_amazon():
 @xbot_webservice.route('/bot', methods=['POST'])
 def main():
     data = request.json
+    return Response(json.dumps({"Error": "force return"}), status=500, mimetype='application/json')
+
 
     print(f"###############################\n{json.dumps(data)}\n#############################")  # Comment to hide what Telegram is sending you
 
