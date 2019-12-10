@@ -13,7 +13,7 @@ class ScraperBroker(metaclass=Singleton):
         self.current_scraper = random.choice(self.scrapers)
 
     def get_scraper(self, user=None):
-        return self.current_scraper
+        return random.choice(self.scrapers)
 
     @staticmethod
     def restart_scraper(scraper_address):
