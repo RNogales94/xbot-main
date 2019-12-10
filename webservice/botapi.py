@@ -108,8 +108,9 @@ def main():
             json_data['chat_id'] = 213337828
 
             requests.post(message_url, json=json_data)
-        except:
-            pass
+        except Exception as e:
+            print(e)
+
         return Response(json.dumps(json_data), status=200, mimetype='application/json')
     except Exception as e:
         print(f"<<--------------- Exception happens ---------\n{e}\n-----------End--------->>")
