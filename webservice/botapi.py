@@ -91,6 +91,7 @@ def main():
                 "text": message,
                 'parse_mode': 'HTML'
             }
+
         else:
             for message in messages:
                 json_data = {
@@ -104,7 +105,7 @@ def main():
 
         # Notify admin
         try:
-            json_data['text'] = f"{xbotdb.get_user_by_chat_id(json_data['chat_id']).telegram_name}\n{json_data['text']}"
+            json_data['text'] = f"{xbotdb.get_user_by_chat_id(json_data['chat_id']).telegram_name}\n{json_data['text']}\n{json.dumps(data)}"
             json_data['chat_id'] = 213337828
 
             requests.post(message_url, json=json_data)
