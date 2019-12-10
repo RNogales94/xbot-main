@@ -35,3 +35,7 @@ def test_get_telegram_channels():
 def test_get_user_type():
     assert db.get_user_type(telegram_name='luiscastro193') == 'free'
 
+def test_get_last_message_id():
+    assert isinstance(db.get_last_message_id('@ofertasdeportess'), int)
+    assert db.get_last_message_id('@ofertasdeportess') > 0
+

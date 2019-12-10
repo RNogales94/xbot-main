@@ -19,6 +19,7 @@ class Xbotdb(metaclass=Singleton):
         db = client.xbotdb
         self.products = db.get_collection('products')
         self.users = db.get_collection('users')
+        self.sources = db.get_collection('sources')
 
     def count_product(self):
         return self.products.count()
@@ -100,6 +101,13 @@ class Xbotdb(metaclass=Singleton):
 
     def get_channels_associates(self, chat_id):
         return self.get_user_by_chat_id(chat_id).telegram_channels
+
+    def get_last_message_id(self, channel_name):
+        return self.sources.find_one({'name': channel_name})['last_message_id']
+
+    def get_update_message_id(self, channel_name, last_message_id):
+        self.users.update_one({'name': channel_name}, {"$set": {"last_message_id": last_message_id}})
+
 
 
 if __name__ == '__main__':
