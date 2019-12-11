@@ -99,13 +99,12 @@ def main():
 
         else:
             for message in messages:
-                if message != 'None':
-                    json_data = {
-                        "chat_id": chat_id,
-                        "text": message,
-                        'parse_mode': 'HTML'
-                    }
-                    requests.post(message_url, json=json_data)
+                json_data = {
+                    "chat_id": chat_id,
+                    "text": message,
+                    'parse_mode': 'HTML'
+                }
+                requests.post(message_url, json=json_data)
 
         # Notify admin
         try:
