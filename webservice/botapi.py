@@ -75,6 +75,7 @@ def main():
 
     try:
         messages, chat_id = bot.reply(data)
+        message_url = BOT_URL + 'sendMessage'
 
         # Avoid flood
         if isinstance(messages, str):
@@ -84,6 +85,9 @@ def main():
                 "text": message,
                 'parse_mode': 'HTML'
             }
+
+            requests.post(message_url, json=json_data)
+
         elif messages == []:
             message = "No he podido sacar datos de ese producto"
             json_data = {
@@ -91,21 +95,21 @@ def main():
                 "text": message,
                 'parse_mode': 'HTML'
             }
+            requests.post(message_url, json=json_data)
 
         else:
             for message in messages:
-                json_data = {
-                    "chat_id": chat_id,
-                    "text": message,
-                    'parse_mode': 'HTML'
-                }
-
-        message_url = BOT_URL + 'sendMessage'
-        requests.post(message_url, json=json_data)
+                if message != 'None':
+                    json_data = {
+                        "chat_id": chat_id,
+                        "text": message,
+                        'parse_mode': 'HTML'
+                    }
+                    requests.post(message_url, json=json_data)
 
         # Notify admin
         try:
-            json_data['text'] = f"{xbotdb.get_user_by_chat_id(json_data['chat_id']).telegram_name}\n{json_data['text']}\n{json.dumps(data)}"
+            json_data['text'] = f"To: {xbotdb.get_user_by_chat_id(json_data['chat_id']).telegram_name}\n{messages}\nInput: {json.dumps(data)}"
             json_data['chat_id'] = 213337828
 
             requests.post(message_url, json=json_data)
