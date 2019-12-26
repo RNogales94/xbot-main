@@ -52,6 +52,11 @@ class Bot(metaclass=Singleton):
 
             return message, chat_id
         else:
+            # if user is not registered register user
+            chat = data['chat']
+            user = db.get_user_by_chat_id(chat['id'])
+            if user is None:
+                self.__create_new_user(data)
             return "Consigue una prueba gratuita contactando con @RNogales", chat_id
 
     @staticmethod
