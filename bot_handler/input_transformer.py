@@ -1,6 +1,6 @@
 from utils.singleton import Singleton
 from utils.regex_utils import is_image_url, fix_url_if_comes_in_list, capture_urls
-
+import re
 
 class InputTransformer(metaclass=Singleton):
 
@@ -95,8 +95,17 @@ class InputTransformer(metaclass=Singleton):
 
         return chat
 
+    @staticmethod
+    def remove_channel_name(link):
+        pattern = r'https://www\.amazon\.(com|es)/(?P<channel>.*/)?dp/(?P<ASIN>[A-Z0-9]{10})'
+        if re.match(pattern, link):
+            ASIN = re.match(pattern, link).group('ASIN')
+            link = f'https://www.amazon.es/dp/{ASIN}'
+        return link
+
     def capture_input_data(self, data_json):
         links = self.capture_links(data_json)
+        links = [self.remove_channel_name(link) for link in links]
         message = self.capture_message(data_json)
         chat = self.capture_chat(data_json)
 

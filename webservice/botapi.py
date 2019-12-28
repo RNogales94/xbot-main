@@ -88,7 +88,7 @@ def main():
 
             requests.post(message_url, json=json_data)
 
-        elif messages == []:
+        elif not messages:
             message = "No he podido sacar datos de ese producto"
             json_data = {
                 "chat_id": chat_id,
