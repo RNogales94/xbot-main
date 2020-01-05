@@ -97,7 +97,6 @@ class Bot(metaclass=Singleton):
             return message, chat_id
 
     def __reply_to(self, intent, data):
-
         message_handler = self.__handle_intent[intent]
         response_text = message_handler(data)
 
