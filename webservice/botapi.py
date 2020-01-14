@@ -10,7 +10,6 @@ from xbot.xbotdb import Xbotdb
 from bot_handler.telegram_config import BOT_URL
 from bot_handler.bot import Bot
 
-
 xbot_webservice = Flask(__name__)
 CORS(xbot_webservice)
 
@@ -52,11 +51,13 @@ def get_user_feed():
 
         # Notify admin
 
-        json_data['text'] = f"To: {xbotdb.get_user_by_chat_id(json_data['chat_id']).telegram_name}\n{user_response}\nInput: {json.dumps(data)}"
+        json_data[
+            'text'] = f"To: {xbotdb.get_user_by_chat_id(json_data['chat_id']).telegram_name}\n{user_response}\nInput: {json.dumps(data)}"
         json_data['chat_id'] = 213337828
 
         requests.post(message_url, json=json_data)
     except Exception as e:
+        # Notify error to admin
 
         json_data = {
             "chat_id": 213337828,
@@ -65,6 +66,13 @@ def get_user_feed():
         }
 
         message_url = BOT_URL + 'sendMessage'
+        requests.post(message_url, json=json_data)
+
+        # Notify error to user
+        data = request.json
+        chat_id = data['chat']['id']
+
+        json_data['chat_id'] = chat_id
         requests.post(message_url, json=json_data)
 
         return Response(json.dumps({'Error': str(e)}), status=200, mimetype='application/json')
