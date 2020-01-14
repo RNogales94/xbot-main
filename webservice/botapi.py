@@ -57,6 +57,16 @@ def get_user_feed():
 
         requests.post(message_url, json=json_data)
     except Exception as e:
+
+        json_data = {
+            "chat_id": 213337828,
+            "text": f"ERROR: {str(e)}",
+            'parse_mode': 'HTML'
+        }
+
+        message_url = BOT_URL + 'sendMessage'
+        requests.post(message_url, json=json_data)
+
         return Response(json.dumps({'Error': str(e)}), status=200, mimetype='application/json')
 
     return Response(json.dumps(json_data), status=200, mimetype='application/json')
