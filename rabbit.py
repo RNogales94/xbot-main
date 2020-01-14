@@ -1,10 +1,9 @@
 import pika
 from settings import RABBIT_USER, RABBIT_PASS, RABBIT_HOST
-from utils.singleton import Singleton
 import json
 
 
-class Rabbit(metaclass=Singleton):
+class Rabbit():
     def __init__(self):
         self.credentials = pika.PlainCredentials(RABBIT_USER, RABBIT_PASS)
         self.parameters = pika.ConnectionParameters(RABBIT_HOST,
