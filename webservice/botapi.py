@@ -26,37 +26,38 @@ def index():
 
 @xbot_webservice.route('/bot', methods=['POST'])
 def get_user_feed():
-    data = request.json
-    chat_id, links = bot.get_feed(data)
-
-    for url in links:
-        message = {'origin': chat_id, 'url': url, 'time': datetime.now().strftime("%d/%m/%Y, %H:%M:%S")}
-        Rabbit().log(body=message, routing_key='ManualFeed')
-
-    if len(links) == 0:
-        user_response = 'No se ha capturado ningún link válido de Amazon, pruebe con otro mensaje'
-    if len(links) == 1:
-        user_response = f'Link Capturado: {links[0]}'
-    if len(links) > 1:
-        user_response = f'Links Capturados:\n{links}'
-
-    json_data = {
-        "chat_id": chat_id,
-        "text": user_response,
-        'parse_mode': 'HTML'
-    }
-
-    message_url = BOT_URL + 'sendMessage'
-    requests.post(message_url, json=json_data)
-
-    # Notify admin
     try:
+        data = request.json
+        chat_id, links = bot.get_feed(data)
+
+        for url in links:
+            message = {'origin': chat_id, 'url': url, 'time': datetime.now().strftime("%d/%m/%Y, %H:%M:%S")}
+            Rabbit().log(body=message, routing_key='ManualFeed')
+
+        if len(links) == 0:
+            user_response = 'No se ha capturado ningún link válido de Amazon, pruebe con otro mensaje'
+        if len(links) == 1:
+            user_response = f'Link Capturado: {links[0]}'
+        if len(links) > 1:
+            user_response = f'Links Capturados:\n{links}'
+
+        json_data = {
+            "chat_id": chat_id,
+            "text": user_response,
+            'parse_mode': 'HTML'
+        }
+
+        message_url = BOT_URL + 'sendMessage'
+        requests.post(message_url, json=json_data)
+
+        # Notify admin
+
         json_data['text'] = f"To: {xbotdb.get_user_by_chat_id(json_data['chat_id']).telegram_name}\n{user_response}\nInput: {json.dumps(data)}"
         json_data['chat_id'] = 213337828
 
         requests.post(message_url, json=json_data)
     except Exception as e:
-        print(e)
+        return Response(json.dumps({'Error': str(e)}), status=200, mimetype='application/json')
 
     return Response(json.dumps(json_data), status=200, mimetype='application/json')
 
