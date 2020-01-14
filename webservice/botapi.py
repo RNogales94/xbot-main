@@ -17,7 +17,6 @@ CORS(xbot_webservice)
 xbotdb = Xbotdb()
 
 bot = Bot()
-broker = Rabbit()
 
 
 @xbot_webservice.route("/")
@@ -32,7 +31,7 @@ def get_user_feed():
 
     for url in links:
         message = {'origin': chat_id, 'url': url, 'time': datetime.now().strftime("%d/%m/%Y, %H:%M:%S")}
-        broker.log(body=message, routing_key='ManualFeed')
+        Rabbit().log(body=message, routing_key='ManualFeed')
 
     if len(links) == 0:
         user_response = 'No se ha capturado ningún link válido de Amazon, pruebe con otro mensaje'
