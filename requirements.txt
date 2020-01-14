@@ -4,3 +4,5 @@ requests
 pymongo
 pytest
 lxml
+pika
+python-dotenv

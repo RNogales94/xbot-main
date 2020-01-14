@@ -81,6 +81,13 @@ class Bot(metaclass=Singleton):
         message = 'No reply in channels'
         return message, chat_id
 
+    @staticmethod
+    def get_feed(data_json):
+        data = it.capture_input_data(data_json)
+        chat_id = data['chat']['id']
+
+        return chat_id, data.get('links')
+
     def reply(self, data_json):
         """
         reply to the indicate user an appropiate response based on the incoming message.
