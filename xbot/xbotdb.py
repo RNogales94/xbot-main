@@ -19,17 +19,18 @@ class Xbotdb(metaclass=Singleton):
         db = client.xbotdb
         self.products = db.get_collection('products')
         self.users = db.get_collection('users')
+        self.sources = db.get_collection('sources')
 
     def count_product(self):
         return self.products.count()
 
-    def insert_product(self, product, use_timestamp=True, telegram_name=None):
+    def insert_product(self, product, use_timestamp=True, origin=None):
         p = product.to_dict()
 
         if use_timestamp:
             p['timestamp'] = datetime.now().timestamp()
-        if telegram_name is not None:
-            p['origin'] = telegram_name
+        if origin is not None:
+            p['origin'] = origin
 
         self.products.insert_one(p)
 
@@ -98,8 +99,15 @@ class Xbotdb(metaclass=Singleton):
             amazon_tag = None
         return amazon_tag
 
-    def get_channels_associates(self, telegram_name):
-        return self.users.find_one({'telegramName': telegram_name})['telegramChannels']
+    def get_channels_associates(self, chat_id):
+        return self.get_user_by_chat_id(chat_id).telegram_channels
+
+    def get_last_message_id(self, channel_name):
+        return self.sources.find_one({'name': channel_name})['last_message_id']
+
+    def get_update_message_id(self, channel_name, last_message_id):
+        self.users.update_one({'name': channel_name}, {"$set": {"last_message_id": last_message_id}})
+
 
 
 if __name__ == '__main__':

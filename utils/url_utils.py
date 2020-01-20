@@ -3,6 +3,10 @@ import requests
 import urllib
 
 
+def clean_url(url):
+    return url
+
+
 def capture_urls(text):
     urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*(),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', text)
     return urls
@@ -14,7 +18,12 @@ def contain_urls(text):
 
 def expand_url(url):
     session = requests.Session()  # so connections are recycled
-    resp = session.head(url, allow_redirects=True)
+    try:
+        resp = session.head(url, allow_redirects=True)
+    except requests.exceptions.MissingSchema:
+        print('----> WARNING')
+        print(f'URL {url} cannot be expanded, probably this is not a valid URL, return {None}')
+        return None
     return resp.url
 
 

@@ -1,5 +1,5 @@
-from bot.line_formater import LineFormater
-from bot.message import Message
+from bot_handler.line_formater import LineFormater
+from bot_handler.message import Message
 from utils.amazon.tools import AmazonTools
 from utils.singleton import Singleton
 
@@ -12,7 +12,6 @@ class MessageCustomizer(metaclass=Singleton):
         has_price = product.price is not None
         has_img_url = product.image_url is not None
         return has_img_url and has_price and has_title
-
 
     @classmethod
     def build_message(cls, product, user=None, coupon=None):
@@ -67,7 +66,7 @@ class MessageCustomizer(metaclass=Singleton):
                             link_line=LineFormater.get_link_line(url=url, style=style),
                             watched_in_line=LineFormater.watched_in(style=style)
                         )
-            print(msg)
+            print(f"Final message\n{msg}")
             return msg
 
         else:

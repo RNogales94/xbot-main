@@ -28,9 +28,14 @@ def test_get_amazon_tag():
 
 
 def test_get_telegram_channels():
-    assert db.get_channels_associates(telegram_name='luiscastro193') == []
+    assert db.get_channels_associates(chat_id='287572747') == []
+    assert db.get_channels_associates(chat_id='213337828') == [-1001391121305]
 
 
 def test_get_user_type():
     assert db.get_user_type(telegram_name='luiscastro193') == 'free'
+
+def test_get_last_message_id():
+    assert isinstance(db.get_last_message_id('@ofertasdeportess'), int)
+    assert db.get_last_message_id('@ofertasdeportess') > 0
 
