@@ -10,6 +10,22 @@
           <option name="url" value="http://github.com" />
           <option name="userName" value="RNogales94" />
         </UrlAndUserName>
+        <UrlAndUserName>
+          <option name="url" value="https://github.com/RNogales94/xbot-amazon-feed.git" />
+          <option name="userName" value="" />
+        </UrlAndUserName>
+        <UrlAndUserName>
+          <option name="url" value="https://github.com/RNogales94/xbot-delivery-bot.git" />
+          <option name="userName" value="" />
+        </UrlAndUserName>
+        <UrlAndUserName>
+          <option name="url" value="https://github.com/RNogales94/xbot_feed_scraper.git" />
+          <option name="userName" value="" />
+        </UrlAndUserName>
+        <UrlAndUserName>
+          <option name="url" value="https://github.com/RNogales94/xbot_telegram_feed.git" />
+          <option name="userName" value="" />
+        </UrlAndUserName>
       </list>
     </option>
     <option name="cloneParentDir" value="C:\Users\rafaelno.NGAHRUSER\PycharmProjects" />
