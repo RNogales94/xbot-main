@@ -81,7 +81,6 @@ def get_user_feed():
             print(f'VERY IMPORTANT ERROR: {e}\nreturning 200 to avoid infinite loop')
             return Response(json.dumps({'Error': str(e)}), status=200, mimetype='application/json')
 
-
     return Response(json.dumps(json_data), status=200, mimetype='application/json')
 
 
