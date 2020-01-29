@@ -17,14 +17,20 @@ def contain_urls(text):
 
 
 def expand_url(url):
-    session = requests.Session()  # so connections are recycled
     try:
-        resp = session.head(url, allow_redirects=True)
-    except requests.exceptions.MissingSchema:
-        print('----> WARNING')
-        print(f'URL {url} cannot be expanded, probably this is not a valid URL, return {None}')
-        return None
-    return resp.url
+        if 'amazon' in urllib.parse.urlparse(url).hostname:
+            return url
+        session = requests.Session()  # so connections are recycled
+        try:
+            resp = session.head(url, allow_redirects=True, timeout=10)
+        except requests.exceptions.MissingSchema:
+            print('----> WARNING')
+            print(f'URL {url} cannot be expanded, probably this is not a valid URL, return {None}')
+            return None
+        return resp.url
+    except Exception as e:
+        print(f'Exception while expanding url: {url}\n{e}')
+        return url
 
 
 def get_app_name(scraper_address):

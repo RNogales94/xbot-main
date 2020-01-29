@@ -57,25 +57,29 @@ def get_user_feed():
 
         requests.post(message_url, json=json_data)
     except Exception as e:
-        # Notify error to admin
+        try:
+            # Notify error to admin
 
-        json_data = {
-            "chat_id": 213337828,
-            "text": f"ERROR: {str(e)}",
-            'parse_mode': 'HTML'
-        }
+            json_data = {
+                "chat_id": 213337828,
+                "text": f"ERROR: {str(e)}",
+                'parse_mode': 'HTML'
+            }
 
-        message_url = BOT_URL + 'sendMessage'
-        requests.post(message_url, json=json_data)
+            message_url = BOT_URL + 'sendMessage'
+            requests.post(message_url, json=json_data)
 
-        # Notify error to user
-        data = request.json
-        chat_id = data['chat']['id']
+            # Notify error to user
+            data = request.json
+            chat_id = data['chat']['id']
 
-        json_data['chat_id'] = chat_id
-        requests.post(message_url, json=json_data)
+            json_data['chat_id'] = chat_id
+            requests.post(message_url, json=json_data)
 
-        return Response(json.dumps({'Error': str(e)}), status=200, mimetype='application/json')
+            return Response(json.dumps({'Error': str(e)}), status=200, mimetype='application/json')
+        except Exception as e:
+            print(f'VERY IMPORTANT ERROR: {e}\nreturning 200 to avoid infinite loop')
+            return Response(json.dumps({'Error': str(e)}), status=200, mimetype='application/json')
 
     return Response(json.dumps(json_data), status=200, mimetype='application/json')
 
