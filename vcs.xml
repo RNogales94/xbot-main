@@ -26,6 +26,14 @@
           <option name="url" value="https://github.com/RNogales94/xbot_telegram_feed.git" />
           <option name="userName" value="" />
         </UrlAndUserName>
+        <UrlAndUserName>
+          <option name="url" value="https://prodngahr.visualstudio.com/HR%20Portfolio/_git/hrx-prediction-validation-tool" />
+          <option name="userName" value="" />
+        </UrlAndUserName>
+        <UrlAndUserName>
+          <option name="url" value="http://prodngahr.visualstudio.com" />
+          <option name="userName" value="Rafael.Nogales" />
+        </UrlAndUserName>
       </list>
     </option>
     <option name="cloneParentDir" value="C:\Users\rafaelno.NGAHRUSER\PycharmProjects" />
