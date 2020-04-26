@@ -37,7 +37,13 @@ def get_user_feed():
             user_response = 'Bienvenido a XBot, contacta con @RNogales para activar tu cuenta demo gratuitamente\nUsa /help para aprender como usar XBot'
 
         elif text == '/help':
+            user_response = '/info Para otener información sobre Xbot\n/cupon <CODIGO> <PRECIO> <URL>\n/infocupon para informacion sobre /cupon'
+
+        elif text == '/info':
             user_response = 'Xbot es una pareja de bots, @tg_xbot y @delivery_xbot. \nPuedes enviar links de Amazon o reenviar mensajes desde otros canales a @tg_xbot y @delivery_xbot te responderá.\nPero para activar tu cuenta necesitas enviar tu tag de amazon a @RNogales y añadir @delivery_xbot como administrador a un canal en el que quieras recibir las ofertas.\nXbot tambien puede buscar y enviarte ofertas automáticamente sin que tu hagas nada, incluso filtrar por categorias y extraer estadísticas de clicks de tus canales.'
+
+        elif text == '/infocupon':
+            user_response = 'Los centimos del precio deben separarse con punto (no vale coma) y el simbolo del € debe ir seguido sin espacios, tambien se puede usar el del $.\n\nSi el bot dice "cupon capturado" es que lo has hecho bien!'
 
         elif coupon is not None:
             code = coupon.get('code', None)
