@@ -27,18 +27,25 @@ def index():
 def get_user_feed():
     try:
         data = request.json
-        chat_id, links = bot.get_feed(data)
+        chat_id, links, text = bot.get_feed(data)
 
-        for url in links:
-            message = {'origin': chat_id, 'url': url, 'time': datetime.now().strftime("%d/%m/%Y, %H:%M:%S")}
-            Rabbit().log(body=message, routing_key='ManualFeed')
+        if text == '/start':
+            user_response = 'Bienvenido a XBot, contacta con @RNogales para activar tu cuenta demo gratuitamente\nUsa /help para aprender como usar XBot'
 
-        if len(links) == 0:
-            user_response = 'No se ha capturado ningún link válido de Amazon, pruebe con otro mensaje'
-        if len(links) == 1:
-            user_response = f'Link Capturado: {links[0]}'
-        if len(links) > 1:
-            user_response = f'Links Capturados:\n{links}'
+        elif text == '/help':
+            user_response = 'Xbot es una pareja de bots, @tg_xbot y @delivery_xbot. \nPuedes enviar links de Amazon o reenviar mensajes desde otros canales a @tg_xbot y @delivery_xbot te responderá.\nPero para activar tu cuenta necesitas enviar tu tag de amazon a @RNogales y añadir @delivery_xbot como administrador a un canal en el que quieras recibir las ofertas.\nXbot tambien puede buscar y enviarte ofertas automáticamente sin que tu hagas nada, incluso filtrar por categorias y extraer estadísticas de clicks de tus canales.'
+
+        else:
+            for url in links:
+                message = {'origin': chat_id, 'url': url, 'time': datetime.now().strftime("%d/%m/%Y, %H:%M:%S")}
+                Rabbit().log(body=message, routing_key='ManualFeed')
+
+            if len(links) == 0:
+                user_response = 'No se ha capturado ningún link válido de Amazon, pruebe con otro mensaje'
+            elif len(links) == 1:
+                user_response = f'Link Capturado: {links[0]}'
+            else:
+                user_response = f'Links Capturados:\n{links}'
 
         json_data = {
             "chat_id": chat_id,
