@@ -37,7 +37,7 @@ def get_user_feed():
             user_response = 'Bienvenido a XBot, contacta con @RNogales para activar tu cuenta demo gratuitamente\nUsa /help para aprender como usar XBot'
 
         elif text == '/help':
-            user_response = '/info Para otener información sobre Xbot\n/cupon <CODIGO> <PRECIO> <URL>\n/infocupon para informacion sobre /cupon'
+            user_response = '/info Para otener información sobre Xbot\n/cupon CODIGO PRECIO URL\n/infocupon para informacion sobre /cupon'
 
         elif text == '/info':
             user_response = 'Xbot es una pareja de bots, @tg_xbot y @delivery_xbot. \nPuedes enviar links de Amazon o reenviar mensajes desde otros canales a @tg_xbot y @delivery_xbot te responderá.\nPero para activar tu cuenta necesitas enviar tu tag de amazon a @RNogales y añadir @delivery_xbot como administrador a un canal en el que quieras recibir las ofertas.\nXbot tambien puede buscar y enviarte ofertas automáticamente sin que tu hagas nada, incluso filtrar por categorias y extraer estadísticas de clicks de tus canales.'
