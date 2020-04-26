@@ -48,6 +48,7 @@ def get_user_feed():
                 for url in links:
                     message = {'origin': chat_id, 'url': url, 'code': code, 'price': final_price, 'time': datetime.now().strftime("%d/%m/%Y, %H:%M:%S")}
                     Rabbit().log(body=message, routing_key='ManualFeed')
+                user_response = f'Cupon Capturado:\nCODE: {code}\nPrecio: {final_price}\n {links[0]}'
         else:
             for url in links:
                 message = {'origin': chat_id, 'url': url, 'time': datetime.now().strftime("%d/%m/%Y, %H:%M:%S")}
