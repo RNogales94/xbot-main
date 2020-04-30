@@ -20,7 +20,6 @@ xbotdb = Xbotdb()
 bot = Bot()
 
 
-
 @xbot_webservice.route("/")
 def index():
     return 'xbot_proxy'
@@ -109,6 +108,144 @@ def get_user_feed():
             return Response(json.dumps({'Error': str(e)}), status=200, mimetype='application/json')
 
     return Response(json.dumps(json_data), status=200, mimetype='application/json')
+
+########################
+#  OTHER API METHODS   #
+########################
+########################
+
+
+@xbot_webservice.route('/api/v1/offers', methods=['GET'])
+def get_offers():
+    page = int(request.args.get('page', 0))
+    max_items = int(request.args.get('max_items', 20))
+    user_id = request.args.get('user_id')
+
+    errors = []
+    # Validations
+    if page < 0 or max_items < 1:
+        errors.append('page < 0 or max_items < 1')
+        response = json.dumps({"products": [], "errors": errors})
+        status = 404
+
+    else:
+        db = Xbotdb()
+        offset = page * max_items
+        products = db.get_products(skip=offset, limit=max_items, new_first=True)
+        response = json.dumps({"products": products, "errors": []})
+        status = 200
+
+    return Response(response, mimetype='application/json', status=status)
+
+
+@xbot_webservice.route('/api/v1/search', methods=['GET'])
+def search_offers():
+    text = request.args.get('text')
+    min_discount = int(request.args.get('min_discount', 0))
+    user_id = request.args.get('user_id')
+
+    products = []
+    response = json.dumps({"products": products, "errors": []})
+    status = 200
+
+    return Response(response, mimetype='application/json', status=status)
+
+
+@xbot_webservice.route('/api/v1/set_alert', methods=['POST'])
+def set_alert():
+    data = request.json
+    min_discount = int(data.get('min_discount', 0))
+    text = data.get('text')
+    user_id = data.get('user_id')
+
+    response = {"min_discount": min_discount,
+                "text": text,
+                "user_id": user_id,
+                "errors": []
+                }
+    status = 200
+
+    return Response(response, mimetype='application/json', status=status)
+
+
+@xbot_webservice.route('/api/v1/report_offer', methods=['POST'])
+def report_offer():
+    data = request.json
+    offer_id = data.get('offer_id')
+    user_id = data.get('user_id')
+
+    response = {"offer_id": offer_id,
+                "user_id": user_id,
+                "errors": []
+                }
+    status = 200
+
+    return Response(response, mimetype='application/json', status=status)
+
+
+@xbot_webservice.route('/api/v1/rate_offer', methods=['POST'])
+def rate_offer():
+    data = request.json
+    offer_id = data.get('offer_id')
+    rate = data.get('rate')
+    user_id = data.get('user_id')
+
+    response = {"offer_id": offer_id,
+                "rate": rate,
+                "user_id": user_id,
+                "errors": []
+                }
+    status = 200
+
+    return Response(response, mimetype='application/json', status=status)
+
+
+@xbot_webservice.route('/api/v1/offer_click', methods=['POST'])
+def offer_click():
+    data = request.json
+    offer_id = data.get('offer_id')
+    user_id = data.get('user_id')
+    rate = True  # Implicit ratting
+
+    response = {"offer_id": offer_id,
+                "rate": rate,
+                "user_id": user_id,
+                "errors": []
+                }
+    status = 200
+
+    return Response(response, mimetype='application/json', status=status)
+
+
+@xbot_webservice.route('/api/v1/get_news', methods=['GET'])
+def get_news():
+    user_id = request.args.get('user_id')
+
+    products = []
+    response = json.dumps({"products": products, "errors": []})
+    status = 200
+
+    return Response(response, mimetype='application/json', status=status)
+
+
+@xbot_webservice.route('/api/v1/notification_click', methods=['POST'])
+def notification_click():
+    data = request.json
+    offer_id = data.get('offer_id')
+    user_id = data.get('user_id')
+    timestamp_arrival = data.get('timestamp_arrival')
+
+    rate = True  # Implicit ratting
+
+    response = {"offer_id": offer_id,
+                "rate": rate,
+                "user_id": user_id,
+                "timestamp_arrival": timestamp_arrival,
+                "errors": []
+                }
+    status = 200
+
+    return Response(response, mimetype='application/json', status=status)
 
 
 if __name__ == '__main__':
