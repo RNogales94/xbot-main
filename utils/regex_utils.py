@@ -39,7 +39,7 @@ def get_amazon_tag(message):
 
 def get_coupon_info(message):
 
-    pattern = re.compile(r"^/cupon\s(\w+)\s([$?\d\,\.\']+[€$]?)\s(http.*)$")
+    pattern = re.compile(r"^/[Cc]upon\s(\w+)\s([$?\d\,\.\']+[€$]?)\s(http.*)$")
     if pattern.match(message) is not None:
         groups = pattern.match(message).groups()
         code = groups[0]

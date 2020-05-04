@@ -140,12 +140,28 @@ def get_offers():
 
 @xbot_webservice.route('/api/v1/search', methods=['GET'])
 def search_offers():
-    text = request.args.get('text')
-    min_discount = int(request.args.get('min_discount', 0))
-    user_id = request.args.get('user_id')
+    errors = []
+    products = []
+
+    try:
+        text = request.args.get('text')
+        min_discount = int(request.args.get('min_discount', 0))
+        user_id = request.args.get('user_id')
+    except Exception as e:
+        print(e)
+        errors.append(str(e))
+        response = json.dumps({"products": products, "errors": errors})
+        return Response(response, mimetype='application/json', status=404)
+
+    print(min_discount)
+
+    if text is None:
+        errors.append(str('text field, was empty'))
+        response = json.dumps({"products": products, "errors": errors})
+        return Response(response, mimetype='application/json', status=404)
 
     products = []
-    response = json.dumps({"products": products, "errors": []})
+    response = json.dumps({"products": products, "errors": errors})
     status = 200
 
     return Response(response, mimetype='application/json', status=status)
