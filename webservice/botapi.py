@@ -77,8 +77,13 @@ def get_user_feed():
 
         # Notify admin
 
-        json_data[
-            'text'] = f"To: {xbotdb.get_user_by_chat_id(json_data['chat_id']).telegram_name}\n{user_response}\nInput: {json.dumps(data)}"
+        user = xbotdb.get_user_by_chat_id(json_data['chat_id'])
+        if user is not None:
+            username = user.telegram_name
+        else:
+            username = chat_id
+
+        json_data['text'] = f"To: {username}\n{user_response}\nInput: {json.dumps(data)}"
         json_data['chat_id'] = 213337828
 
         requests.post(message_url, json=json_data)
@@ -97,6 +102,7 @@ def get_user_feed():
 
             # Notify error to user
             data = request.json
+            print(data)
             chat_id = data['chat']['id']
 
             json_data['chat_id'] = chat_id
