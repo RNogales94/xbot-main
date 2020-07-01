@@ -98,10 +98,11 @@ class InputTransformer(metaclass=Singleton):
 
     @staticmethod
     def remove_channel_name(link):
-        pattern = r'https://www\.amazon\.(com|es)/(?P<channel>.*/)?dp/(?P<ASIN>[A-Z0-9]{10})'
+        pattern = r'https://www\.amazon\.(com|es)/(?P<channel>.*/)?dp/(?P<ASIN>[A-Z0-9]{10})(?P<params>/.*(\?.*)?)?'
         if re.match(pattern, link):
             ASIN = re.match(pattern, link).group('ASIN')
-            link = f'https://www.amazon.es/dp/{ASIN}'
+            PARAMS = re.match(pattern, link).group('params') or ''
+            link = f'https://www.amazon.es/dp/{ASIN}{PARAMS}'
         return link
 
     def capture_input_data(self, data_json):
