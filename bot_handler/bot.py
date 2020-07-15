@@ -86,7 +86,7 @@ class Bot(metaclass=Singleton):
         data = it.capture_input_data(data_json)
         chat_id = data['chat']['id']
 
-        return chat_id, data.get('links')
+        return chat_id, data.get('links'), data.get('message')
 
     def reply(self, data_json):
         """

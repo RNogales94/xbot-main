@@ -10,6 +10,8 @@ from xbot.xbotdb import Xbotdb
 from bot_handler.telegram_config import BOT_URL
 from bot_handler.bot import Bot
 
+from utils.regex_utils import get_coupon_info
+
 xbot_webservice = Flask(__name__)
 CORS(xbot_webservice)
 
@@ -27,18 +29,42 @@ def index():
 def get_user_feed():
     try:
         data = request.json
-        chat_id, links = bot.get_feed(data)
+        chat_id, links, text = bot.get_feed(data)
+        coupon = get_coupon_info(text)
 
-        for url in links:
-            message = {'origin': chat_id, 'url': url, 'time': datetime.now().strftime("%d/%m/%Y, %H:%M:%S")}
-            Rabbit().log(body=message, routing_key='ManualFeed')
+        if text == '/start':
+            user_response = 'Bienvenido a XBot, contacta con @RNogales para activar tu cuenta demo gratuitamente\nUsa /help para aprender como usar XBot'
 
-        if len(links) == 0:
-            user_response = 'No se ha capturado ningún link válido de Amazon, pruebe con otro mensaje'
-        if len(links) == 1:
-            user_response = f'Link Capturado: {links[0]}'
-        if len(links) > 1:
-            user_response = f'Links Capturados:\n{links}'
+        elif text == '/help':
+            user_response = '/info Para otener información sobre Xbot\n/cupon CODIGO PRECIO URL\n/infocupon para informacion sobre /cupon'
+
+        elif text == '/info':
+            user_response = 'Xbot es una pareja de bots, @tg_xbot y @delivery_xbot. \nPuedes enviar links de Amazon o reenviar mensajes desde otros canales a @tg_xbot y @delivery_xbot te responderá.\nPero para activar tu cuenta necesitas enviar tu tag de amazon a @RNogales y añadir @delivery_xbot como administrador a un canal en el que quieras recibir las ofertas.\nXbot tambien puede buscar y enviarte ofertas automáticamente sin que tu hagas nada, incluso filtrar por categorias y extraer estadísticas de clicks de tus canales.'
+
+        elif text == '/infocupon':
+            user_response = 'Los centimos del precio deben separarse con punto (no vale coma) y el simbolo del € debe ir seguido sin espacios, tambien se puede usar el del $.\n\nSi el bot dice "cupon capturado" es que lo has hecho bien!'
+
+        elif coupon is not None:
+            code = coupon.get('code', None)
+            final_price = coupon.get('final_price', None)
+            links = coupon.get('urls', None)
+
+            if (code is not None) and (final_price is not None) and (links is not None):
+                for url in links:
+                    message = {'origin': chat_id, 'url': url, 'coupon_code': code, 'coupon_price': final_price, 'time': datetime.now().strftime("%d/%m/%Y, %H:%M:%S")}
+                    Rabbit().log(body=message, routing_key='ManualFeed')
+                user_response = f'Cupon Capturado:\nCODE: {code}\nPrecio: {final_price}\n {links[0]}'
+        else:
+            for url in links:
+                message = {'origin': chat_id, 'url': url, 'time': datetime.now().strftime("%d/%m/%Y, %H:%M:%S")}
+                Rabbit().log(body=message, routing_key='ManualFeed')
+
+            if len(links) == 0:
+                user_response = 'No se ha capturado ningún link válido de Amazon, pruebe con otro mensaje'
+            elif len(links) == 1:
+                user_response = f'Link Capturado: {links[0]}'
+            else:
+                user_response = f'Links Capturados:\n{links}'
 
         json_data = {
             "chat_id": chat_id,
@@ -51,8 +77,13 @@ def get_user_feed():
 
         # Notify admin
 
-        json_data[
-            'text'] = f"To: {xbotdb.get_user_by_chat_id(json_data['chat_id']).telegram_name}\n{user_response}\nInput: {json.dumps(data)}"
+        user = xbotdb.get_user_by_chat_id(json_data['chat_id'])
+        if user is not None:
+            username = user.telegram_name
+        else:
+            username = chat_id
+
+        json_data['text'] = f"To: {username}\n{user_response}\nInput: {json.dumps(data)}"
         json_data['chat_id'] = 213337828
 
         requests.post(message_url, json=json_data)
@@ -71,6 +102,7 @@ def get_user_feed():
 
             # Notify error to user
             data = request.json
+            print(data)
             chat_id = data['chat']['id']
 
             json_data['chat_id'] = chat_id
@@ -83,64 +115,159 @@ def get_user_feed():
 
     return Response(json.dumps(json_data), status=200, mimetype='application/json')
 
+########################
+#  OTHER API METHODS   #
+########################
+########################
 
-# @xbot_webservice.route('/bot', methods=['POST'])
-# def main():
-#     data = request.json
-#     try:
-#         messages, chat_id = bot.reply(data)
-#         message_url = BOT_URL + 'sendMessage'
-#
-#         # Avoid flood
-#         if isinstance(messages, str):
-#             message = messages
-#             json_data = {
-#                 "chat_id": chat_id,
-#                 "text": message,
-#                 'parse_mode': 'HTML'
-#             }
-#
-#             requests.post(message_url, json=json_data)
-#
-#         elif not messages:
-#             message = "No he podido sacar datos de ese producto"
-#             json_data = {
-#                 "chat_id": chat_id,
-#                 "text": message,
-#                 'parse_mode': 'HTML'
-#             }
-#             requests.post(message_url, json=json_data)
-#
-#         else:
-#             for message in messages:
-#                 json_data = {
-#                     "chat_id": chat_id,
-#                     "text": message,
-#                     'parse_mode': 'HTML'
-#                 }
-#                 requests.post(message_url, json=json_data)
-#
-#         # Notify admin
-#         try:
-#             json_data['text'] = f"To: {xbotdb.get_user_by_chat_id(json_data['chat_id']).telegram_name}\n{messages}\nInput: {json.dumps(data)}"
-#             json_data['chat_id'] = 213337828
-#
-#             requests.post(message_url, json=json_data)
-#         except Exception as e:
-#             print(e)
-#
-#         return Response(json.dumps(json_data), status=200, mimetype='application/json')
-#     except Exception as e:
-#         print(f"<<--------------- Exception happens ---------\n{e}\n-----------End--------->>")
-#         json_data = {
-#             "chat_id": 213337828,
-#             "text": "Ha habido un error inesperado",
-#             'parse_mode': 'HTML'
-#         }
-#
-#         message_url = BOT_URL + 'sendMessage'
-#         requests.post(message_url, json=json_data)  # This can avoid memory leaks
-#         return Response(json.dumps(json_data), status=200, mimetype='application/json')
+
+@xbot_webservice.route('/api/v1/offers', methods=['GET'])
+def get_offers():
+    page = int(request.args.get('page', 0))
+    max_items = int(request.args.get('max_items', 20))
+    user_id = request.args.get('user_id')
+
+    errors = []
+    # Validations
+    if page < 0 or max_items < 1:
+        errors.append('page < 0 or max_items < 1')
+        response = json.dumps({"products": [], "errors": errors})
+        status = 404
+
+    else:
+        db = Xbotdb()
+        offset = page * max_items
+        products = db.get_products(skip=offset, limit=max_items, new_first=True)
+        response = json.dumps({"products": products, "errors": []})
+        status = 200
+
+    return Response(response, mimetype='application/json', status=status)
+
+
+@xbot_webservice.route('/api/v1/search', methods=['GET'])
+def search_offers():
+    errors = []
+    products = []
+
+    try:
+        text = request.args.get('text')
+        min_discount = int(request.args.get('min_discount', 0))
+        user_id = request.args.get('user_id')
+    except Exception as e:
+        print(e)
+        errors.append(str(e))
+        response = json.dumps({"products": products, "errors": errors})
+        return Response(response, mimetype='application/json', status=404)
+
+    print(min_discount)
+
+    if text is None:
+        errors.append(str('text field, was empty'))
+        response = json.dumps({"products": products, "errors": errors})
+        return Response(response, mimetype='application/json', status=404)
+
+    products = []
+    response = json.dumps({"products": products, "errors": errors})
+    status = 200
+
+    return Response(response, mimetype='application/json', status=status)
+
+
+@xbot_webservice.route('/api/v1/set_alert', methods=['POST'])
+def set_alert():
+    data = request.json
+    min_discount = int(data.get('min_discount', 0))
+    text = data.get('text')
+    user_id = data.get('user_id')
+
+    response = {"min_discount": min_discount,
+                "text": text,
+                "user_id": user_id,
+                "errors": []
+                }
+    status = 200
+
+    return Response(response, mimetype='application/json', status=status)
+
+
+@xbot_webservice.route('/api/v1/report_offer', methods=['POST'])
+def report_offer():
+    data = request.json
+    offer_id = data.get('offer_id')
+    user_id = data.get('user_id')
+
+    response = {"offer_id": offer_id,
+                "user_id": user_id,
+                "errors": []
+                }
+    status = 200
+
+    return Response(response, mimetype='application/json', status=status)
+
+
+@xbot_webservice.route('/api/v1/rate_offer', methods=['POST'])
+def rate_offer():
+    data = request.json
+    offer_id = data.get('offer_id')
+    rate = data.get('rate')
+    user_id = data.get('user_id')
+
+    response = {"offer_id": offer_id,
+                "rate": rate,
+                "user_id": user_id,
+                "errors": []
+                }
+    status = 200
+
+    return Response(response, mimetype='application/json', status=status)
+
+
+@xbot_webservice.route('/api/v1/offer_click', methods=['POST'])
+def offer_click():
+    data = request.json
+    offer_id = data.get('offer_id')
+    user_id = data.get('user_id')
+    rate = True  # Implicit ratting
+
+    response = {"offer_id": offer_id,
+                "rate": rate,
+                "user_id": user_id,
+                "errors": []
+                }
+    status = 200
+
+    return Response(response, mimetype='application/json', status=status)
+
+
+@xbot_webservice.route('/api/v1/get_news', methods=['GET'])
+def get_news():
+    user_id = request.args.get('user_id')
+
+    products = []
+    response = json.dumps({"products": products, "errors": []})
+    status = 200
+
+    return Response(response, mimetype='application/json', status=status)
+
+
+@xbot_webservice.route('/api/v1/notification_click', methods=['POST'])
+def notification_click():
+    data = request.json
+    offer_id = data.get('offer_id')
+    user_id = data.get('user_id')
+    timestamp_arrival = data.get('timestamp_arrival')
+
+    rate = True  # Implicit ratting
+
+    response = {"offer_id": offer_id,
+                "rate": rate,
+                "user_id": user_id,
+                "timestamp_arrival": timestamp_arrival,
+                "errors": []
+                }
+    status = 200
+
+    return Response(response, mimetype='application/json', status=status)
 
 
 if __name__ == '__main__':
