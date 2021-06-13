@@ -38,6 +38,10 @@
           <option name="url" value="https://github.com/Kona-Connect/sophia-chatbot.git" />
           <option name="userName" value="" />
         </UrlAndUserName>
+        <UrlAndUserName>
+          <option name="url" value="https://github.com/RNogales94/master-ciberseguridad-aplicacion-web.git" />
+          <option name="userName" value="" />
+        </UrlAndUserName>
       </list>
     </option>
     <option name="cloneParentDir" value="C:\Users\rafaelno.NGAHRUSER\PycharmProjects" />
